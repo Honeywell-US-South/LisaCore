@@ -21,6 +21,7 @@ namespace LisaCore
         public Lisa(ILogger? logger = null)
         {
             _logger = logger;
+            _graph = new BrickSchemaManager();
             InitCodeProcessor();
         }
 
