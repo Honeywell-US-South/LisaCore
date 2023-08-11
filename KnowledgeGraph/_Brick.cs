@@ -262,7 +262,7 @@ namespace LisaCore
 
         public void AddEquipment(EquipmentTypes type, string id, string name)
         {
-            bool save = !_graph.IsEntity(id);
+     
             switch (type)
             {
                 case EquipmentTypes.AHU:
@@ -270,7 +270,7 @@ namespace LisaCore
                     if (!ahu.Name.Equals(name))
                     {
                         ahu.Name = name;
-                        save = true;
+                        
                     }
                     break;
                 case EquipmentTypes.Chiller:
@@ -278,7 +278,7 @@ namespace LisaCore
                     if (!chiller.Name.Equals(name))
                     {
                         chiller.Name = name;
-                        save = true;
+                       
                     }
                     break;
                 case EquipmentTypes.CoolingTower:
@@ -286,7 +286,15 @@ namespace LisaCore
                     if (!coolingTower.Name.Equals(name))
                     {
                         coolingTower.Name = name;
-                        save = true;
+                       
+                    }
+                    break;
+                case EquipmentTypes.Fan:
+                    var fan = _graph.AddEquipmentHVACFan(id);
+                    if (!fan.Name.Equals(name))
+                    {
+                        fan.Name = name;
+                        
                     }
                     break;
                 case EquipmentTypes.FCU:
@@ -294,7 +302,7 @@ namespace LisaCore
                     if (!fcu.Name.Equals(name))
                     {
                         fcu.Name = name;
-                        save = true;
+                       
                     }
                     break;
                 case EquipmentTypes.Meter:
@@ -302,7 +310,7 @@ namespace LisaCore
                     if (!meter.Name.Equals(name))
                     {
                         meter.Name = name;
-                        save = true;
+                      
                     }
                     break;
                 case EquipmentTypes.Pump:
@@ -310,7 +318,7 @@ namespace LisaCore
                     if (!pump.Name.Equals(name))
                     {
                         pump.Name = name;
-                        save = true;
+                       
                     }
                     break;
                 case EquipmentTypes.VAV:
@@ -318,7 +326,7 @@ namespace LisaCore
                     if (!vav.Name.Equals(name))
                     {
                         vav.Name = name;
-                        save = true;
+                       
                     }
                     break;
             }

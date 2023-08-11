@@ -11,6 +11,7 @@ namespace LisaCore.KnowledgeGraph.Enums
         AHU,
         Chiller,
         CoolingTower,
+        Fan,
         FCU,
         Pump,
         Meter,
