@@ -16,5 +16,6 @@ namespace LisaCore.KnowledgeGraph.Enums
         Pump,
         Meter,
         VAV
+
     }
 }
