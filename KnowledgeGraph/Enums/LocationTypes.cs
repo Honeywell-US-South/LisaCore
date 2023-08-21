@@ -27,6 +27,8 @@ namespace LisaCore.KnowledgeGraph.Enums
         WaterTank,
         Storey,
         Wing,
-        Zone
+        Zone,
+        ChilledWaterPlant,
+        HotWaterPlant,
     }
 }
