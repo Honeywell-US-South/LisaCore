@@ -110,7 +110,7 @@ namespace LisaCore
                     if (!bilding.Name.Equals(name))
                     {
                         bilding.Name = name;
-                        save = true;
+        
                     }
                     break;
                 case LocationTypes.CommonSpace:
@@ -118,7 +118,7 @@ namespace LisaCore
                     if (!commonSpace.Name.Equals(name))
                     {
                         commonSpace.Name = name;
-                        save = true;
+          
                     }
                     break;
                 case LocationTypes.Entrance:
@@ -126,7 +126,7 @@ namespace LisaCore
                     if (!enterance.Name.Equals(name))
                     {
                         enterance.Name = name;
-                        save = true;
+                
                     }
                     break;
                 case LocationTypes.Floor:
@@ -134,7 +134,7 @@ namespace LisaCore
                     if (!floor.Name.Equals(name))
                     {
                         floor.Name = name;
-                        save = true;
+             
                     }
                     break;
                 case LocationTypes.GateHouse:
@@ -142,7 +142,7 @@ namespace LisaCore
                     if (!gateHouse.Name.Equals(name))
                     {
                         gateHouse.Name = name;
-                        save = true;
+          
                     }
                     break;
                 case LocationTypes.MediaHotDesk:
@@ -150,7 +150,7 @@ namespace LisaCore
                     if (!mediaHotDesk.Name.Equals(name))
                     {
                         mediaHotDesk.Name = name;
-                        save = true;
+              
                     }
                     break;
                 case LocationTypes.OutdoorArea:
@@ -158,7 +158,7 @@ namespace LisaCore
                     if (!outdoorArea.Name.Equals(name))
                     {
                         outdoorArea.Name = name;
-                        save = true;
+           
                     }
                     break;
                 case LocationTypes.Outside:
@@ -166,7 +166,7 @@ namespace LisaCore
                     if (!outside.Name.Equals(name))
                     {
                         outside.Name = name;
-                        save = true;
+      
                     }
                     break;
                 case LocationTypes.Parking:
@@ -174,7 +174,7 @@ namespace LisaCore
                     if (!parking.Name.Equals(name))
                     {
                         parking.Name = name;
-                        save = true;
+          
                     }
                     break;
                 case LocationTypes.Region:
@@ -182,7 +182,7 @@ namespace LisaCore
                     if (!region.Name.Equals(name))
                     {
                         region.Name = name;
-                        save = true;
+    
                     }
                     break;
                 case LocationTypes.Room:
@@ -190,7 +190,7 @@ namespace LisaCore
                     if (!room.Name.Equals(name))
                     {
                         room.Name = name;
-                        save = true;
+         
                     }
                     break;
                 case LocationTypes.Site:
@@ -198,7 +198,7 @@ namespace LisaCore
                     if (!site.Name.Equals(name))
                     {
                         site.Name = name;
-                        save = true;
+       
                     }
                     break;
                 case LocationTypes.Space:
@@ -206,7 +206,7 @@ namespace LisaCore
                     if (!space.Name.Equals(name))
                     {
                         space.Name = name;
-                        save = true;
+             
                     }
                     break;
                 case LocationTypes.Storey:
@@ -214,7 +214,7 @@ namespace LisaCore
                     if (!storey.Name.Equals(name))
                     {
                         storey.Name = name;
-                        save = true;
+            
                     }
                     break;
                 case LocationTypes.TicketingBooth:
@@ -222,7 +222,7 @@ namespace LisaCore
                     if (!ticketingBooth.Name.Equals(name))
                     {
                         ticketingBooth.Name = name;
-                        save = true;
+           
                     }
                     break;
                 case LocationTypes.Tunnel:
@@ -230,7 +230,7 @@ namespace LisaCore
                     if (!tunnel.Name.Equals(name))
                     {
                         tunnel.Name = name;
-                        save = true;
+      
                     }
                     break;
                 case LocationTypes.VerticalSpace:
@@ -238,7 +238,7 @@ namespace LisaCore
                     if (!verticalSpace.Name.Equals(name))
                     {
                         verticalSpace.Name = name;
-                        save = true;
+   
                     }
                     break;
                 case LocationTypes.WaterTank:
@@ -246,7 +246,7 @@ namespace LisaCore
                     if (!waterTank.Name.Equals(name))
                     {
                         waterTank.Name = name;
-                        save = true;
+
                     }
                     break;
                 case LocationTypes.Wing:
@@ -254,7 +254,7 @@ namespace LisaCore
                     if (!wing.Name.Equals(name))
                     {
                         wing.Name = name;
-                        save = true;
+
                     }
                     break;
                 case LocationTypes.Zone:
@@ -262,7 +262,23 @@ namespace LisaCore
                     if (!zone.Name.Equals(name))
                     {
                         zone.Name = name;
-                        save = true;
+                    
+                    }
+                    break;
+                case LocationTypes.ChilledWaterPlant:
+                    var cwp = _graph.AddLocationChilledWaterPlant(id);
+                    if (!cwp.Name.Equals(name))
+                    {
+                        cwp.Name = name;
+                      
+                    }
+                    break;
+                case LocationTypes.HotWaterPlant:
+                    var hwp = _graph.AddLocationHotWaterPlant(id);
+                    if (!hwp.Name.Equals(name))
+                    {
+                        hwp.Name = name;
+
                     }
                     break;
             }
