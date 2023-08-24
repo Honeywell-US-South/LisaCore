@@ -65,18 +65,18 @@ namespace LisaCore.Bot.Processor
 
         public void LoadSystemKnowledge()
         {
-            LoadAimlFromEmbeddedResource("LisaCore.lib.aiml.ahu.aiml");
-            LoadAimlFromEmbeddedResource("LisaCore.lib.aiml.chiller.aiml");
-            LoadAimlFromEmbeddedResource("LisaCore.lib.aiml.chws.aiml");
-            LoadAimlFromEmbeddedResource("LisaCore.lib.aiml.defaultsetpoints.aiml");
-            LoadAimlFromEmbeddedResource("LisaCore.lib.aiml.dictionary.aiml");
+            //LoadAimlFromEmbeddedResource("LisaCore.lib.aiml.ahu.aiml");
+            //LoadAimlFromEmbeddedResource("LisaCore.lib.aiml.chiller.aiml");
+            //LoadAimlFromEmbeddedResource("LisaCore.lib.aiml.chws.aiml");
+            //LoadAimlFromEmbeddedResource("LisaCore.lib.aiml.defaultsetpoints.aiml");
+            //LoadAimlFromEmbeddedResource("LisaCore.lib.aiml.dictionary.aiml");
             //LoadAimlFromEmbeddedResource("LisaCore.lib.aiml.emotion.aiml");
-            LoadAimlFromEmbeddedResource("LisaCore.lib.aiml.geography.aiml");
+            //LoadAimlFromEmbeddedResource("LisaCore.lib.aiml.geography.aiml");
             LoadAimlFromEmbeddedResource("LisaCore.lib.aiml.hello.aiml");
-            LoadAimlFromEmbeddedResource("LisaCore.lib.aiml.hvac.aiml");
-            LoadAimlFromEmbeddedResource("LisaCore.lib.aiml.smartbuilding.aiml");
+            //LoadAimlFromEmbeddedResource("LisaCore.lib.aiml.hvac.aiml");
+            //LoadAimlFromEmbeddedResource("LisaCore.lib.aiml.smartbuilding.aiml");
             LoadAimlFromEmbeddedResource("LisaCore.lib.aiml.tasks.aiml");
-            LoadAimlFromEmbeddedResource("LisaCore.lib.aiml.vav.aiml");
+            //LoadAimlFromEmbeddedResource("LisaCore.lib.aiml.vav.aiml");
         }
 
         internal (List<string>, float?) AskBert(Bert bert, string input)

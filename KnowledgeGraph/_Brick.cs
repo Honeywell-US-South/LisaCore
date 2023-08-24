@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
+using BrickSchema.Net.Shapes;
 
 //Keep this as LisaCore
 namespace LisaCore
@@ -73,6 +74,14 @@ namespace LisaCore
         public List<BrickBehavior> GetBehaviors(List<string>? behaviorIds = null, bool byReference = true)
         {
             var brickBehaviors = _graph.GetBehaviors(behaviorIds ?? new(), byReference);
+
+
+            return brickBehaviors;
+        }
+
+        public List<BrickBehavior> GetBehaviorsByShapeType(List<string>? behaviorIds = null, BehaviorFunction.Types type, bool byReference = true)
+        {
+            var brickBehaviors = _graph.GetBehaviorsByShapeType(behaviorIds ?? new(), type, byReference);
 
 
             return brickBehaviors;
