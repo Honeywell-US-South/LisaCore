@@ -339,6 +339,22 @@ namespace LisaCore
                        
                     }
                     break;
+                case EquipmentTypes.ThermalStorage:
+                    var ts = _graph.AddEquipmentThermalStorage(id);
+                    if (!ts.Name.Equals(name))
+                    {
+                        ts.Name = name;
+
+                    }
+                    break;
+                case EquipmentTypes.WaterDistribution:
+                    var wd = _graph.AddEquipmentWaterDistribution(id);
+                    if (!wd.Name.Equals(name))
+                    {
+                        wd.Name = name;
+
+                    }
+                    break;
             }
             
         }
