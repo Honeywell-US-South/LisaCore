@@ -15,7 +15,8 @@ namespace LisaCore.KnowledgeGraph.Enums
         FCU,
         Pump,
         Meter,
-        VAV
-
+        VAV,
+        ThermalStorage,
+        WaterDistribution
     }
 }
