@@ -35,10 +35,10 @@ namespace LisaCore.Nlp.BERT
         }
     
 
-    public ITransformer BuidAndTrain(string bertModelPath, bool useGpu)
+    public ITransformer BuidAndTrain(string bertModelOnnxFilePath, bool useGpu)
         {
             var pipeline = _mlContext.Transforms
-                            .ApplyOnnxModel(modelFile: bertModelPath,
+                            .ApplyOnnxModel(modelFile: bertModelOnnxFilePath,
                                             outputColumnNames: new[] { "unstack:1",
                                                                        "unstack:0",
                                                                        "unique_ids:0" },

@@ -229,13 +229,12 @@ namespace LisaCore.Bot
                 var (tokens, proability) = _categoryMatcher.AskBert(_bert, query.Input);
                 if (proability != null)
                 {
-                    if (proability >= 0.30)
+                    if (proability >= 0.6)
                     {
                         response = new Response();
                         response.Message = string.Join(" ", tokens);
                     }
                 }
-
                 //return nlp response
             }
             #endregion NLP

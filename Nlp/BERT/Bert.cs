@@ -18,13 +18,13 @@ namespace LisaCore.Nlp.BERT
         private readonly Tokenizer _tokenizer;
         private Predictor _predictor;
 
-        public Bert(string vocabularyFilePath, string bertModelPath, string? contextFilePath = null, bool useGpu = false)
+        public Bert(string bertModelVocabularyFilePath, string bertModelOnnxFilePath, string? contextFilePath = null, bool useGpu = false)
         {
-            _vocabulary = FileReader.LoadVocabFromFile(vocabularyFilePath);
+            _vocabulary = FileReader.LoadVocabFromFile(bertModelVocabularyFilePath);
             _tokenizer = new Tokenizer(_vocabulary);
 
             var trainer = new Trainer();
-            var trainedModel = trainer.BuidAndTrain(bertModelPath, useGpu);
+            var trainedModel = trainer.BuidAndTrain(bertModelOnnxFilePath, useGpu);
             _predictor = new Predictor(trainedModel);
             LoadContextFromFile(contextFilePath);
         }

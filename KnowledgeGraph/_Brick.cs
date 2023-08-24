@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json.Linq;
 
 //Keep this as LisaCore
 namespace LisaCore
@@ -541,6 +542,30 @@ namespace LisaCore
 
         }
 
-
+        public Dictionary<int, string> ProcessGraphToContext()
+        {
+            List<string> sentences = new List<string>();
+            foreach (var e in _graph.GetEntities())
+            { 
+                sentences.Add($"Entity name {e.GetProperty<string>(BrickSchema.Net.EntityProperties.PropertiesEnum.Name)} is a {e.Type}");
+                foreach (var property in e.Properties)
+                {
+                    sentences.Add($"Entity {e.GetProperty<string>(BrickSchema.Net.EntityProperties.PropertiesEnum.Name)} {property.Name} is {property.Value}");
+                }
+                foreach (var relationship in e.Relationships)
+                {
+                    string relationshipType = relationship.Type;
+                    var parent = e.GetEntity(relationship.ParentId);
+                    // You can continue to extract more details and form the required sentence.
+                    sentences.Add($"Entity {e.GetProperty<string>(BrickSchema.Net.EntityProperties.PropertiesEnum.Name)} of type {e.Type} has a relationship of type {relationship.Type} with parent name {parent?.GetProperty<string>(BrickSchema.Net.EntityProperties.PropertiesEnum.Name)}.");
+                }
+            }
+            Dictionary<int, string> context = new Dictionary<int, string>();
+            for (int i = 0; i < sentences.Count;i++)
+            {
+                context.Add(i, sentences[i]);
+            }
+            return context;
+        }
     }
 }

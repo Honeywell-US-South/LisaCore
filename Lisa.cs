@@ -33,6 +33,24 @@ namespace LisaCore
             _behaviorManager = new BehaviorManager();
         }
 
+        public Lisa(string aiKnowledgeDirectory, string bertModelOnnxFilePath, string bertModelVocabularyFilePath, bool useGpu = false, ILogger? logger = null)
+        {
+            _logger = logger;
+            InitCodeProcessor();
+            InitKnowledge(aiKnowledgeDirectory);
+            _behaviorManager = new BehaviorManager();
+            InitNlp(bertModelVocabularyFilePath, bertModelOnnxFilePath, useGpu);
+        }
+
+        public Lisa(string aiKnowledgeDirectory, string bertModelOnnxFilePath, string bertModelVocabularyFilePath, string nlpContextFilePath, bool useGpu = false, ILogger? logger = null)
+        {
+            _logger = logger;
+            InitCodeProcessor();
+            InitKnowledge(aiKnowledgeDirectory);
+            _behaviorManager = new BehaviorManager();
+            InitNlp(bertModelVocabularyFilePath, bertModelOnnxFilePath, nlpContextFilePath, useGpu);
+        }
+
         private void InitCodeProcessor()
         {
 
@@ -43,7 +61,6 @@ namespace LisaCore
 
         public void InitKnowledge(string aiKnowledgeDirectory)
         {
-
             Helpers.SystemIOUtilities.CreateDirectoryIfNotExists(aiKnowledgeDirectory);
             string brickFile = Path.Combine(aiKnowledgeDirectory, "graph.json");
             _graph = new BrickSchemaManager(brickFile);

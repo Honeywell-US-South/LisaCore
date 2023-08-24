@@ -13,15 +13,15 @@ namespace LisaCore
     /// </summary>
     public partial class Lisa
     {
-        public void InitNlp(string vocabularyFilePath, string ModelPath, bool useGpu = false)
+        public void InitNlp(string bertModelVocabularyFilePath, string bertModeOnnxFilelPath, bool useGpu = false)
         {
-            _bert = new Bert(vocabularyFilePath, ModelPath, null, useGpu);
+            _bert = new Bert(bertModelVocabularyFilePath, bertModeOnnxFilelPath, null, useGpu);
             _chatlBot?.SetBert(_bert);
         }
 
-        public void InitNlp(string vocabularyFilePath, string ModelPath, string contextFilePath, bool useGpu = false)
+        public void InitNlp(string bertModelVocabularyFilePath, string bertModeOnnxFilelPath, string contextFilePath, bool useGpu = false)
         {
-            _bert = new Bert(vocabularyFilePath, ModelPath, contextFilePath, useGpu);
+            _bert = new Bert(bertModelVocabularyFilePath, bertModeOnnxFilelPath, contextFilePath, useGpu);
             _chatlBot?.SetBert(_bert);
         }
 
@@ -43,6 +43,11 @@ namespace LisaCore
             _chatlBot.SetNlpContext(context);
         }
 
+        public void GenerateContextFromGraph()
+        {
+            var context = ProcessGraphToContext();
+            _bert?.SetContext(context);
+        }
 
     }
 }

@@ -12,7 +12,7 @@ namespace LisaCore
     /// </summary>
     public partial class Lisa
     {
-        public async Task<string> GetResponseAsync(string userId, string? converstationId, string input, int? recursionDepth = null)
+        public async Task<string> AskLisaAsync(string userId, string? converstationId, string input, int? recursionDepth = null)
         {
             Bot.Conversations.Query query = new Bot.Conversations.Query();
             query.Input = input;
@@ -31,7 +31,7 @@ namespace LisaCore
             return "I'm sorry, I don't have information for you request. Please restate your query.";
         }
 
-        public async Task<string> Learn(string topic, string pattern, string template)
+        public async Task<string> TeachLisa(string topic, string pattern, string template)
         {
             if (string.IsNullOrEmpty(_aiKnowledgeDirectory) || _chatlBot == null) return "Error. Please initlize knowledge before I can process your request.";
             try
@@ -48,7 +48,7 @@ namespace LisaCore
             return !(string.IsNullOrEmpty(_aiKnowledgeDirectory) || _chatlBot == null);
         }
 
-        public List<Bot.Conversations.Contracts.Conversation> GetConversations(string userId)
+        public List<Bot.Conversations.Contracts.Conversation> GetUserConversations(string userId)
         {
             var conversations = _chatlBot?.ConversationManager.GetAllConversations(userId) ?? new();
             return conversations;
@@ -60,7 +60,7 @@ namespace LisaCore
             return queries;
         }
 
-        public List<string> GeConverstationTopics(string userId, string converstationId)
+        public List<string> GeUserConverstationTopics(string userId, string converstationId)
         {
             var topics = _chatlBot?.ConversationManager.GetConversationTopics(userId, converstationId) ?? new();
             return topics;
