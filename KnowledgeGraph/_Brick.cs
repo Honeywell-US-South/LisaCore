@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 using BrickSchema.Net.Shapes;
+using BrickSchema.Net.Classes.Equipments.HVACType;
 
 //Keep this as LisaCore
 namespace LisaCore
@@ -94,25 +95,26 @@ namespace LisaCore
 
         }
 
-        public void AddTenant(string id, string name)
+        public Tenant AddTenant(string id, string name)
         {
             var tenant = _graph.AddTenant(id);
             tenant.Name = name;
+            return tenant;
         }
 
-        public void AddLocation(LocationTypes type, string id, string name)
+        public Location? AddLocation(LocationTypes type, string id, string name)
         {
-            bool save = !_graph.IsEntity(id);
+
             switch (type)
             {
                 case LocationTypes.Building:
-                    var bilding = _graph.AddLocationBuilding(id);
-                    if (!bilding.Name.Equals(name))
+                    var building = _graph.AddLocationBuilding(id);
+                    if (!building.Name.Equals(name))
                     {
-                        bilding.Name = name;
+                        building.Name = name;
         
                     }
-                    break;
+                    return building;
                 case LocationTypes.CommonSpace:
                     var commonSpace = _graph.AddLocationCommonSpace(id);
                     if (!commonSpace.Name.Equals(name))
@@ -120,7 +122,7 @@ namespace LisaCore
                         commonSpace.Name = name;
           
                     }
-                    break;
+                    return commonSpace;
                 case LocationTypes.Entrance:
                     var enterance = _graph.AddLocationEntrance(id);
                     if (!enterance.Name.Equals(name))
@@ -128,7 +130,7 @@ namespace LisaCore
                         enterance.Name = name;
                 
                     }
-                    break;
+                    return enterance;
                 case LocationTypes.Floor:
                     var floor = _graph.AddLocationFloor(id);
                     if (!floor.Name.Equals(name))
@@ -136,7 +138,7 @@ namespace LisaCore
                         floor.Name = name;
              
                     }
-                    break;
+                    return floor;
                 case LocationTypes.GateHouse:
                     var gateHouse = _graph.AddLocationGateHouse(id);
                     if (!gateHouse.Name.Equals(name))
@@ -144,7 +146,7 @@ namespace LisaCore
                         gateHouse.Name = name;
           
                     }
-                    break;
+                    return gateHouse;
                 case LocationTypes.MediaHotDesk:
                     var mediaHotDesk = _graph.AddLocationMediaHotDesk(id);
                     if (!mediaHotDesk.Name.Equals(name))
@@ -152,7 +154,7 @@ namespace LisaCore
                         mediaHotDesk.Name = name;
               
                     }
-                    break;
+                    return mediaHotDesk;
                 case LocationTypes.OutdoorArea:
                     var outdoorArea = _graph.AddLocationOutdoorArea(id);
                     if (!outdoorArea.Name.Equals(name))
@@ -160,7 +162,7 @@ namespace LisaCore
                         outdoorArea.Name = name;
            
                     }
-                    break;
+                    return outdoorArea;
                 case LocationTypes.Outside:
                     var outside = _graph.AddLocationOutside(id);
                     if (!outside.Name.Equals(name))
@@ -168,7 +170,7 @@ namespace LisaCore
                         outside.Name = name;
       
                     }
-                    break;
+                    return outside;
                 case LocationTypes.Parking:
                     var parking = _graph.AddLocationParking(id);
                     if (!parking.Name.Equals(name))
@@ -176,7 +178,7 @@ namespace LisaCore
                         parking.Name = name;
           
                     }
-                    break;
+                    return parking;
                 case LocationTypes.Region:
                     var region = _graph.AddLocationRegion(id);
                     if (!region.Name.Equals(name))
@@ -184,7 +186,7 @@ namespace LisaCore
                         region.Name = name;
     
                     }
-                    break;
+                    return region;
                 case LocationTypes.Room:
                     var room = _graph.AddLocationRoom(id);
                     if (!room.Name.Equals(name))
@@ -192,7 +194,7 @@ namespace LisaCore
                         room.Name = name;
          
                     }
-                    break;
+                    return room;
                 case LocationTypes.Site:
                     var site = _graph.AddLocationSite(id);
                     if (!site.Name.Equals(name))
@@ -200,7 +202,7 @@ namespace LisaCore
                         site.Name = name;
        
                     }
-                    break;
+                    return site;
                 case LocationTypes.Space:
                     var space = _graph.AddLocationSpace(id);
                     if (!space.Name.Equals(name))
@@ -208,7 +210,7 @@ namespace LisaCore
                         space.Name = name;
              
                     }
-                    break;
+                    return space;
                 case LocationTypes.Storey:
                     var storey = _graph.AddLocationStorey(id);
                     if (!storey.Name.Equals(name))
@@ -216,7 +218,7 @@ namespace LisaCore
                         storey.Name = name;
             
                     }
-                    break;
+                    return storey;
                 case LocationTypes.TicketingBooth:
                     var ticketingBooth = _graph.AddLocationTicketingBooth(id);
                     if (!ticketingBooth.Name.Equals(name))
@@ -224,7 +226,7 @@ namespace LisaCore
                         ticketingBooth.Name = name;
            
                     }
-                    break;
+                    return ticketingBooth;
                 case LocationTypes.Tunnel:
                     var tunnel = _graph.AddLocationTunnel(id);
                     if (!tunnel.Name.Equals(name))
@@ -232,7 +234,7 @@ namespace LisaCore
                         tunnel.Name = name;
       
                     }
-                    break;
+                    return tunnel;
                 case LocationTypes.VerticalSpace:
                     var verticalSpace = _graph.AddLocationVerticalSpace(id);
                     if (!verticalSpace.Name.Equals(name))
@@ -240,7 +242,7 @@ namespace LisaCore
                         verticalSpace.Name = name;
    
                     }
-                    break;
+                    return verticalSpace;
                 case LocationTypes.WaterTank:
                     var waterTank = _graph.AddLocationWaterTank(id);
                     if (!waterTank.Name.Equals(name))
@@ -248,7 +250,7 @@ namespace LisaCore
                         waterTank.Name = name;
 
                     }
-                    break;
+                    return waterTank;
                 case LocationTypes.Wing:
                     var wing = _graph.AddLocationWing(id);
                     if (!wing.Name.Equals(name))
@@ -256,7 +258,7 @@ namespace LisaCore
                         wing.Name = name;
 
                     }
-                    break;
+                    return wing;
                 case LocationTypes.Zone:
                     var zone = _graph.AddLocationZone(id);
                     if (!zone.Name.Equals(name))
@@ -264,7 +266,7 @@ namespace LisaCore
                         zone.Name = name;
                     
                     }
-                    break;
+                    return zone;
                 case LocationTypes.ChilledWaterPlant:
                     var cwp = _graph.AddLocationChilledWaterPlant(id);
                     if (!cwp.Name.Equals(name))
@@ -272,7 +274,7 @@ namespace LisaCore
                         cwp.Name = name;
                       
                     }
-                    break;
+                    return cwp;
                 case LocationTypes.HotWaterPlant:
                     var hwp = _graph.AddLocationHotWaterPlant(id);
                     if (!hwp.Name.Equals(name))
@@ -280,13 +282,13 @@ namespace LisaCore
                         hwp.Name = name;
 
                     }
-                    break;
+                    return hwp;
             }
-
+            return null;
            
         }
 
-        public void AddEquipment(EquipmentTypes type, string id, string name)
+        public Equipment? AddEquipment(EquipmentTypes type, string id, string name)
         {
      
             switch (type)
@@ -298,7 +300,7 @@ namespace LisaCore
                         ahu.Name = name;
                         
                     }
-                    break;
+                    return ahu;
                 case EquipmentTypes.Chiller:
                     var chiller = _graph.AddEquipmentHVACChiller(id);
                     if (!chiller.Name.Equals(name))
@@ -306,7 +308,7 @@ namespace LisaCore
                         chiller.Name = name;
                        
                     }
-                    break;
+                    return chiller;
                 case EquipmentTypes.CoolingTower:
                     var coolingTower = _graph.AddEquipmentHVACCoolingTower(id);
                     if (!coolingTower.Name.Equals(name))
@@ -314,7 +316,7 @@ namespace LisaCore
                         coolingTower.Name = name;
                        
                     }
-                    break;
+                    return coolingTower;
                 case EquipmentTypes.Fan:
                     var fan = _graph.AddEquipmentHVACFan(id);
                     if (!fan.Name.Equals(name))
@@ -322,7 +324,7 @@ namespace LisaCore
                         fan.Name = name;
                         
                     }
-                    break;
+                    return fan;
                 case EquipmentTypes.FCU:
                     var fcu = _graph.AddEquipmentHVACTerminalUnitFCU(id);
                     if (!fcu.Name.Equals(name))
@@ -330,7 +332,7 @@ namespace LisaCore
                         fcu.Name = name;
                        
                     }
-                    break;
+                    return fcu;
                 case EquipmentTypes.Meter:
                     var meter = _graph.AddEquipmentMeter(id);
                     if (!meter.Name.Equals(name))
@@ -338,7 +340,7 @@ namespace LisaCore
                         meter.Name = name;
                       
                     }
-                    break;
+                    return meter;
                 case EquipmentTypes.Pump:
                     var pump = _graph.AddEquipmentHVACPump(id);
                     if (!pump.Name.Equals(name))
@@ -346,7 +348,7 @@ namespace LisaCore
                         pump.Name = name;
                        
                     }
-                    break;
+                    return pump;
                 case EquipmentTypes.VAV:
                     var vav = _graph.AddEquipmentHVACTerminalUnitVAV(id);
                     if (!vav.Name.Equals(name))
@@ -354,7 +356,7 @@ namespace LisaCore
                         vav.Name = name;
                        
                     }
-                    break;
+                    return vav;
                 case EquipmentTypes.ThermalStorage:
                     var ts = _graph.AddEquipmentThermalStorage(id);
                     if (!ts.Name.Equals(name))
@@ -362,7 +364,7 @@ namespace LisaCore
                         ts.Name = name;
 
                     }
-                    break;
+                    return ts;
                 case EquipmentTypes.WaterDistribution:
                     var wd = _graph.AddEquipmentWaterDistribution(id);
                     if (!wd.Name.Equals(name))
@@ -370,12 +372,12 @@ namespace LisaCore
                         wd.Name = name;
 
                     }
-                    break;
+                    return wd;
             }
-            
+            return null;   
         }
 
-        public void AddPoint(PointTypes type, string id, string name, object? readFunction = null, object? writeFunction = null)
+        public Point? AddPoint(PointTypes type, string id, string name, object? readFunction = null, object? writeFunction = null)
         {
             bool save = !_graph.IsEntity(id);
             switch (type)
@@ -387,7 +389,7 @@ namespace LisaCore
                         alarm.Name = name;
                         save = true;
                     }
-                    break;
+                    return alarm;
                 case PointTypes.Command:
                     var cmd = _graph.AddPointCommand(id);
                     if (!cmd.Name.Equals(name))
@@ -395,7 +397,7 @@ namespace LisaCore
                         cmd.Name = name;
                         save = true;
                     }
-                    break;
+                    return cmd;
                 case PointTypes.Parameter:
                     var parameter = _graph.AddPointParameter(id);
                     if (!parameter.Name.Equals(name))
@@ -403,7 +405,7 @@ namespace LisaCore
                         parameter.Name = name;
                         save = true;
                     }
-                    break;
+                    return parameter;
                 case PointTypes.Sensor:
                     var sensor = _graph.AddPointSensor(id);
                     if (!sensor.Name.Equals(name))
@@ -411,7 +413,7 @@ namespace LisaCore
                         sensor.Name = name;
                         save = true;
                     }
-                    break;
+                    return sensor;
                 case PointTypes.Setpoint:
                     var setpoint = _graph.AddPointSetpoint(id);
                     if (!setpoint.Name.Equals(name))
@@ -419,7 +421,7 @@ namespace LisaCore
                         setpoint.Name = name;
                         save = true;
                     }
-                    break;
+                    return setpoint;
                 case PointTypes.Status:
                     var status = _graph.AddPointStatus(id);
                     if (!status.Name.Equals(name))
@@ -427,9 +429,9 @@ namespace LisaCore
                         status.Name = name;
                         save = true;
                     }
-                    break;
+                    return status;
             }
-            
+            return null;
         }
 
         public Tag? AddTag(string name)
