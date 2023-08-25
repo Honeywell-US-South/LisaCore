@@ -10,6 +10,8 @@ using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 using BrickSchema.Net.Shapes;
 using BrickSchema.Net.Classes.Equipments.HVACType;
+using System.Xml.Linq;
+using System.Reflection.Metadata.Ecma335;
 
 //Keep this as LisaCore
 namespace LisaCore
@@ -288,6 +290,11 @@ namespace LisaCore
            
         }
 
+        public bool IsLocation(BrickEntity entity)
+        {
+            return Enum.TryParse<LocationTypes>(entity.Type, out var location);
+        }
+
         public Equipment? AddEquipment(EquipmentTypes type, string id, string name)
         {
      
@@ -377,6 +384,11 @@ namespace LisaCore
             return null;   
         }
 
+        public bool IsEquipment(BrickEntity entity)
+        {
+            return Enum.TryParse<EquipmentTypes>(entity.Type, true, out var equipmentType);
+           
+        }
         public Point? AddPoint(PointTypes type, string id, string name, object? readFunction = null, object? writeFunction = null)
         {
             bool save = !_graph.IsEntity(id);
