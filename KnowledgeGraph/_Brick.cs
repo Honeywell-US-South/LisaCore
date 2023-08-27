@@ -446,6 +446,11 @@ namespace LisaCore
             return null;
         }
 
+        public bool IsPoint(BrickEntity entity)
+        {
+            return Enum.TryParse<PointTypes>(entity.Type, true, out var equipmentType);
+
+        }
         public Tag? AddTag(string name)
         {
             bool save = !_graph.IsTag(name);
