@@ -12,6 +12,7 @@ using BrickSchema.Net.Shapes;
 using BrickSchema.Net.Classes.Equipments.HVACType;
 using System.Xml.Linq;
 using System.Reflection.Metadata.Ecma335;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 //Keep this as LisaCore
 namespace LisaCore
@@ -102,6 +103,10 @@ namespace LisaCore
             var tenant = _graph.AddTenant(id);
             tenant.Name = name;
             return tenant;
+        }
+        public bool IsTenant(BrickEntity entity)
+        {
+            return entity.Type == typeof(Tenant).Name;
         }
 
         public Location? AddLocation(LocationTypes type, string id, string name)
