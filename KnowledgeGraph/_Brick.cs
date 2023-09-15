@@ -13,6 +13,7 @@ using BrickSchema.Net.Classes.Equipments.HVACType;
 using System.Xml.Linq;
 using System.Reflection.Metadata.Ecma335;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using BrickSchema.Net.Behaviors;
 
 //Keep this as LisaCore
 namespace LisaCore
@@ -22,6 +23,8 @@ namespace LisaCore
     /// </summary>
     public partial class Lisa
     {
+        public event EventHandler<BehaviorExecutedEventArgs> OnBehaviorExecuted;
+
         public BrickSchemaManager Graph { get { return _graph; } }
 
         public BrickEntity GetEntity(string id, bool byRefrence = false)
@@ -106,7 +109,7 @@ namespace LisaCore
         }
         public bool IsTenant(BrickEntity entity)
         {
-            return entity.Type == typeof(Tenant).Name;
+            return entity.EntityTypeName == typeof(Tenant).Name;
         }
 
         public Location? AddLocation(LocationTypes type, string id, string name)
@@ -297,7 +300,7 @@ namespace LisaCore
 
         public bool IsLocation(BrickEntity entity)
         {
-            return Enum.TryParse<LocationTypes>(entity.Type, out var location);
+            return Enum.TryParse<LocationTypes>(entity.EntityTypeName, out var location);
         }
 
         public Equipment? AddEquipment(EquipmentTypes type, string id, string name)
@@ -391,7 +394,7 @@ namespace LisaCore
 
         public bool IsEquipment(BrickEntity entity)
         {
-            return Enum.TryParse<EquipmentTypes>(entity.Type, true, out var equipmentType);
+            return Enum.TryParse<EquipmentTypes>(entity.EntityTypeName, true, out var equipmentType);
            
         }
         public Point? AddPoint(PointTypes type, string id, string name, object? readFunction = null, object? writeFunction = null)
@@ -453,7 +456,7 @@ namespace LisaCore
 
         public bool IsPoint(BrickEntity entity)
         {
-            return Enum.TryParse<PointTypes>(entity.Type, true, out var equipmentType);
+            return Enum.TryParse<PointTypes>(entity.EntityTypeName, true, out var equipmentType);
 
         }
         public Tag? AddTag(string name)
@@ -502,7 +505,7 @@ namespace LisaCore
                         RelationshipName = typeof(TagOf).Name;
                         break;
                 }
-                var relationship = entity.Relationships.FirstOrDefault(x => x.ParentId.Equals(parentId) && x.Type.Equals(RelationshipName));
+                var relationship = entity.Relationships.FirstOrDefault(x => x.ParentId.Equals(parentId) && (x.EntityTypeName?.Equals(RelationshipName) ?? false));
                 if (relationship == null)
                 {
                     switch (type)
@@ -544,7 +547,7 @@ namespace LisaCore
             var entity = _graph.GetEntity(entityId, true);
             if (entity != null)
             {
-                var behaviors = entity.GetBehaviors(behavior.Type, true);
+                var behaviors = entity.GetBehaviors(behavior.EntityTypeName, true);
                 if (behaviors.Count >= 1)
                 {
                     for (int i = 0; i < behaviors.Count - 1; i++)
@@ -557,28 +560,34 @@ namespace LisaCore
                 }
                 else
                 {
-                    if (entity.RegisteredBehaviors.ContainsKey(behavior.Type))
+                    if (entity.RegisteredBehaviors.ContainsKey(behavior.EntityTypeName))
                     {
-                        behavior.Id = entity.RegisteredBehaviors[behavior.Type];
+                        behavior.Id = entity.RegisteredBehaviors[behavior.EntityTypeName];
                     }
                     else
                     {
-                        entity.RegisteredBehaviors.Add(behavior.Type, behavior.Id);
+                        entity.RegisteredBehaviors.Add(behavior.EntityTypeName, behavior.Id);
                     }
                     if (!behavior.IsLogger)
                     {
                         behavior.SetLogger(_logger);
                     }
                     behavior.Parent = entity; //must set this before start
+                    behavior.OnBehaviorExecuted += ProcessOnBehaviorExecuted;
                     behavior.Start();
                     entity.Behaviors.Add(behavior);
 
                     _behaviorManager.Subscribe(behavior.OnTimerTick);
+                    
                 }
             }
 
         }
 
+        private void ProcessOnBehaviorExecuted(object sender, BehaviorExecutedEventArgs e)
+        {
+            OnBehaviorExecuted?.Invoke(sender, e);
+        }
         public void StartBehavior(string entityId, string type)
         {
             var entity = _graph.GetEntity(entityId, true);
@@ -612,17 +621,17 @@ namespace LisaCore
             List<string> sentences = new List<string>();
             foreach (var e in _graph.GetEntities())
             { 
-                sentences.Add($"Entity name {e.GetProperty<string>(BrickSchema.Net.EntityProperties.PropertiesEnum.Name)} is a {e.Type}");
+                sentences.Add($"Entity name {e.GetProperty<string>(BrickSchema.Net.EntityProperties.PropertiesEnum.Name)} is a {e.EntityTypeName}");
                 foreach (var property in e.Properties)
                 {
                     sentences.Add($"Entity {e.GetProperty<string>(BrickSchema.Net.EntityProperties.PropertiesEnum.Name)} {property.Name} is {property.Value}");
                 }
                 foreach (var relationship in e.Relationships)
                 {
-                    string relationshipType = relationship.Type;
+                    string relationshipType = relationship.EntityTypeName;
                     var parent = e.GetEntity(relationship.ParentId);
                     // You can continue to extract more details and form the required sentence.
-                    sentences.Add($"Entity {e.GetProperty<string>(BrickSchema.Net.EntityProperties.PropertiesEnum.Name)} of type {e.Type} has a relationship of type {relationship.Type} with parent name {parent?.GetProperty<string>(BrickSchema.Net.EntityProperties.PropertiesEnum.Name)}.");
+                    sentences.Add($"Entity {e.GetProperty<string>(BrickSchema.Net.EntityProperties.PropertiesEnum.Name)} of type {e.EntityTypeName} has a relationship of type {relationship.EntityTypeName} with parent name {parent?.GetProperty<string>(BrickSchema.Net.EntityProperties.PropertiesEnum.Name)}.");
                 }
             }
             Dictionary<int, string> context = new Dictionary<int, string>();

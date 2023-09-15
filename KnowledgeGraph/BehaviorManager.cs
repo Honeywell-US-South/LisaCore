@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BrickSchema.Net.Behaviors;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,8 @@ namespace LisaCore.KnowledgeGraph
 {
     internal class BehaviorManager
     {
+        
+
         private readonly Timer timer;
         private readonly object lockObject = new object();
         private readonly List<Action> subscribers = new List<Action>();
