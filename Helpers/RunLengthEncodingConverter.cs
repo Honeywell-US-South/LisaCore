@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace LisaCore.Helpers
@@ -30,7 +31,7 @@ namespace LisaCore.Helpers
             for (int i = 1; i < values.Count; i++)
             {
 
-                if (values[i].Equals(lastValue))
+                if (values[i]?.Equals(lastValue)??false)
                 {
                     count++;
                 }
@@ -48,22 +49,28 @@ namespace LisaCore.Helpers
             return text;
         }
 
-        private static string ConvertToString(T value)
+        private static string ConvertToString<T>(T? value)
         {
-            string val = string.Empty;
+            if (value == null)
+            {
+                throw new ArgumentNullException(nameof(value));
+            }
+
+            string val;
+
             if (typeof(T) == typeof(PointValueQuality))
             {
-                var status = (PointValueQuality)Convert.ChangeType(value, typeof(PointValueQuality), CultureInfo.InvariantCulture);
+                var status = (PointValueQuality)Convert.ChangeType(value, typeof(PointValueQuality), CultureInfo.InvariantCulture)!;
                 val = status.ToString();
             }
             else if (typeof(T) == typeof(double) || typeof(T) == typeof(Double))
             {
-                var num = (double)Convert.ChangeType(value, typeof(double), CultureInfo.InvariantCulture);
-                val = num.ToString();
+                var num = (double)Convert.ChangeType(value, typeof(double), CultureInfo.InvariantCulture)!;
+                val = num.ToString(CultureInfo.InvariantCulture);
             }
             else
             {
-                val = System.Text.Json.JsonSerializer.Serialize(value);
+                val = JsonSerializer.Serialize(value);
             }
 
             return val;
@@ -76,7 +83,7 @@ namespace LisaCore.Helpers
             List<string> values = new();
             try
             {
-                values = System.Text.Json.JsonSerializer.Deserialize<List<string>>(data);
+                values = JsonSerializer.Deserialize<List<string>>(data);
             }
             catch
             {

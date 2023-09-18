@@ -10,13 +10,18 @@ namespace LisaCore.Helpers
 {
     internal static class FileReader
     {
-        public static List<string> LoadVocabFromFile(string filename)
+        public static List<string> LoadVocabFromFile(string? filename)
         {
+            if (filename == null)
+            {
+                throw new ArgumentNullException(nameof(filename));
+            }
+
             var result = new List<string>();
 
             using (var reader = new StreamReader(filename))
             {
-                string line;
+                string? line;  // Declare line as nullable
 
                 while ((line = reader.ReadLine()) != null)
                 {
@@ -30,16 +35,22 @@ namespace LisaCore.Helpers
             return result;
         }
 
-        public static List<string> LoadVocabFromEmbeddedResource(string path)
+        public static List<string> LoadVocabFromEmbeddedResource(string? path)
         {
+            if (path == null)
+            {
+                throw new ArgumentNullException(nameof(path));
+            }
+
             Assembly assembly = Assembly.GetExecutingAssembly();
-            Stream stream = assembly.GetManifestResourceStream(path);
+            Stream? stream = assembly.GetManifestResourceStream(path);
             var result = new List<string>();
+
             if (stream != null)
             {
                 using (StreamReader reader = new StreamReader(stream))
                 {
-                    string line;
+                    string? line;  // Declare line as nullable
 
                     while ((line = reader.ReadLine()) != null)
                     {
@@ -54,6 +65,7 @@ namespace LisaCore.Helpers
             {
                 // Handle error...
             }
+
             return result;
         }
 

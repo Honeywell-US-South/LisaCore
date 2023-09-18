@@ -9,6 +9,6 @@ namespace LisaCore.MachineLearning.Efficiency.Chiller
     public class ChillerEfficiencyResult : ChillerDataCalculated
     {
         public double Efficiency { get; set; }
-        public double COP { get; set; }
+
     }
 }
