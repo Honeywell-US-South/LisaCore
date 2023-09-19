@@ -69,11 +69,17 @@ namespace LisaCore.Helpers
             return result;
         }
 
-        public static Dictionary<int, string> LoadContextFromEmbeddedResource(string path)
+        public static Dictionary<int, string> LoadContextFromEmbeddedResource(string? path)
         {
+            if (path == null)
+            {
+                throw new ArgumentNullException(nameof(path));
+            }
+
             Assembly assembly = Assembly.GetExecutingAssembly();
-            Stream stream = assembly.GetManifestResourceStream(path);
-            Dictionary<int, string> sections  = new();
+            Stream? stream = assembly.GetManifestResourceStream(path);
+            Dictionary<int, string> sections = new();
+
             if (stream != null)
             {
                 using (StreamReader reader = new StreamReader(stream))
@@ -91,25 +97,30 @@ namespace LisaCore.Helpers
             {
                 // Handle error...
             }
+
             return sections;
         }
 
-        public static Dictionary<int, string> LoadContextFromFile(string filename)
+        public static Dictionary<int, string> LoadContextFromFile(string? filename)
         {
-            
-            Dictionary<int, string> sections = new();
-            
-                using (var reader = new StreamReader(filename))
-                {
-                    var fileContent = reader.ReadToEnd();
-                    var sectionArray = fileContent.Split(new[] { "---" }, StringSplitOptions.None);
+            if (filename == null)
+            {
+                throw new ArgumentNullException(nameof(filename));
+            }
 
-                    for (int i = 0; i < sectionArray.Length; i++)
-                    {
-                        sections.Add(i, sectionArray[i].Trim());
-                    }
+            Dictionary<int, string> sections = new();
+
+            using (var reader = new StreamReader(filename))
+            {
+                var fileContent = reader.ReadToEnd();
+                var sectionArray = fileContent.Split(new[] { "---" }, StringSplitOptions.None);
+
+                for (int i = 0; i < sectionArray.Length; i++)
+                {
+                    sections.Add(i, sectionArray[i].Trim());
                 }
-            
+            }
+
             return sections;
         }
     }
