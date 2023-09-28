@@ -118,7 +118,7 @@
     </PackageReference>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="7.0.11" />
     <PackageReference Include="Microsoft.ML" Version="2.0.1" />
-    <PackageReference Include="Microsoft.ML.OnnxRuntime" Version="1.15.1" />
+    <PackageReference Include="Microsoft.ML.OnnxRuntime" Version="1.16.0" />
     <PackageReference Include="Microsoft.ML.OnnxTransformer" Version="2.0.1" />
     <PackageReference Include="Microsoft.ML.TimeSeries" Version="2.0.1" />
     <PackageReference Include="Microsoft.Recognizers.Text.DateTime" Version="1.8.8" />
