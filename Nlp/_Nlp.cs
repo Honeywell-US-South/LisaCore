@@ -1,4 +1,4 @@
-﻿using LisaCore.Nlp.BERT;
+﻿using LisaCore.MachineLearning.OpenNLP.Tools.BERT;
 using System;
 using System.Collections.Generic;
 using System.Linq;

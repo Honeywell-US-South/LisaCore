@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LisaCore.Bot.Conversations;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,7 +9,7 @@ using System.Xml.Linq;
 
 namespace LisaCore.Bot
 {
-    internal class Response
+    public class Response
     {
         public DateTime Timestamp { get; set; }
        
@@ -19,6 +20,8 @@ namespace LisaCore.Bot
         public string HtmlMessage { get; set; }
         public List<string> Actions { get; set; }
         public bool IsError { get; set; }
+        public Query Query { get; set; }
+
         public Response()
         {
             Timestamp = DateTime.Now;

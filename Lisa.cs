@@ -2,9 +2,10 @@
 using LisaCore.KnowledgeGraph;
 using LisaCore.Bot;
 using LisaCore.Interpreter;
-using LisaCore.Nlp.BERT;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.Extensions.Logging;
+using LisaCore.MachineLearning.LLM.Intent;
+using LisaCore.MachineLearning.OpenNLP.Tools.BERT;
 
 namespace LisaCore
 {
@@ -18,6 +19,8 @@ namespace LisaCore
         private Bert? _bert = null;
         private BrickSchemaManager _graph;
         private BehaviorManager _behaviorManager;
+        private LLMIntentClassifier _intentClassifer;
+
         public Lisa(ILogger? logger = null)
         {
             _logger = logger;
@@ -51,6 +54,8 @@ namespace LisaCore
             InitNlp(bertModelVocabularyFilePath, bertModelOnnxFilePath, nlpContextFilePath, useGpu);
         }
 
+
+
         private void InitCodeProcessor()
         {
 
@@ -64,7 +69,7 @@ namespace LisaCore
             Helpers.SystemIOUtilities.CreateDirectoryIfNotExists(aiKnowledgeDirectory);
             string brickFile = Path.Combine(aiKnowledgeDirectory, "graph.json");
             _graph = new BrickSchemaManager(brickFile);
-
+            _intentClassifer = new LLMIntentClassifier(aiKnowledgeDirectory);
             _aiKnowledgeDirectory = aiKnowledgeDirectory;
             _chatlBot = new Chat(_aiKnowledgeDirectory);
             if (_bert != null)

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LisaCore.Bot;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,23 +13,26 @@ namespace LisaCore
     /// </summary>
     public partial class Lisa
     {
-        public async Task<string> AskLisaAsync(string userId, string? converstationId, string input, int? recursionDepth = null)
+
+
+        public async Task<Response> AskLisaAsync(string userId, string? converstationId, string input, int? recursionDepth = null)
         {
             Bot.Conversations.Query query = new Bot.Conversations.Query();
             query.Input = input;
             if (!string.IsNullOrEmpty(converstationId)) { query.ConversationId = converstationId; }
-            if (string.IsNullOrEmpty(_aiKnowledgeDirectory) || _chatlBot == null) return "Error. Please initlize knowledge before I can process your request.";
+            if (string.IsNullOrEmpty(_aiKnowledgeDirectory) || _chatlBot == null) return new() { Query = query, Message = "Error. Please initlize knowledge before I can process your request." };
 
-
-
+            var intents = _intentClassifer.Predict(input);
+            query.Intents = intents.Where(x=>x.Score >= 1).ToList();
             //process words
             var result = await _chatlBot.GetResponseAsync(userId, query, recursionDepth);
+            
             if (result != null)
             {
-                return result.Message;
+                return result;
             }
-
-            return "I'm sorry, I don't have information for you request. Please restate your query.";
+            result = new() { Query = query, Message = "I'm sorry, I don't have information for you request. Please restate your query." };
+            return result;
         }
 
         public async Task<string> TeachLisa(string topic, string pattern, string template)

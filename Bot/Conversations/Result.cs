@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace LisaCore.Bot.Conversations
 {
-    internal class Result
+    public class Result
     {
         [Key]
         public string Id { get; set; }
@@ -20,6 +20,7 @@ namespace LisaCore.Bot.Conversations
         public string Match { get; set; }
         public string Message { get; set; }
         public string HtmlMessage { get; set; }
+        public double Score { get; set; }
 
         [ForeignKey("Conversation")]
         public string QueryId { get; set; }
@@ -37,6 +38,8 @@ namespace LisaCore.Bot.Conversations
             Message = string.Empty;
             HtmlMessage = string.Empty;
             Actions = new List<Action>();
+            Score = 0;
+            QueryId = string.Empty;
         }
     }
 }

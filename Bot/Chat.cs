@@ -17,8 +17,8 @@ using LisaCore.Bot.Conversations;
 using Microsoft.EntityFrameworkCore.Internal;
 using LisaCore.Nlp;
 using System.IO;
-using LisaCore.Nlp.BERT;
 using Google.Protobuf.WellKnownTypes;
+using LisaCore.MachineLearning.OpenNLP.Tools.BERT;
 
 namespace LisaCore.Bot
 {
@@ -100,6 +100,7 @@ namespace LisaCore.Bot
 
         internal async Task<Response?> GetResponseAsync(string userId, Query query, int? recursionDepth = null)
         {
+            
             Conversation? conversation = _conversationManager.GetConversation(userId, query.ConversationId);
             if (conversation == null)
             {
@@ -114,7 +115,7 @@ namespace LisaCore.Bot
                 _conversationManager.UpdateOrInsertQuery(userId, query);
             }
 
-            Result result = new Result();
+            Conversations.Result result = new Conversations.Result();
             result.QueryId = query.Id;
 
             #region CheckInput
@@ -217,7 +218,7 @@ namespace LisaCore.Bot
             {
                 if (response != null && score >= 60)
                 {
-                    Result result2 = new Result();
+                    Conversations.Result result2 = new Conversations.Result();
                     result2.QueryId = query.Id;
                     result2.HtmlMessage = response.HtmlMessage;
                     result2.Topic = response.Topic;

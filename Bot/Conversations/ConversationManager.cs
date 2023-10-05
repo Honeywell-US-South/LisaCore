@@ -1,6 +1,7 @@
 ﻿using Mages.Core.Ast.Statements;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Quic;
@@ -12,32 +13,34 @@ namespace LisaCore.Bot.Conversations
     internal class ConversationManager
     {
         private string _baseDirectoryPath;
-        private Dictionary<string, ConversationContext> _contexts;
+        private ConcurrentDictionary<string, ConversationContext> _contexts;
 
         public ConversationManager(string baseDirectoryPath)
         {
             _baseDirectoryPath = baseDirectoryPath;
             Helpers.SystemIOUtilities.CreateDirectoryIfNotExists(_baseDirectoryPath);
-            _contexts = new Dictionary<string, ConversationContext>();
+            _contexts = new ConcurrentDictionary<string, ConversationContext>();
         }
 
         public ConversationContext GetUserContext(string userId)
         {
             var fileName = Helpers.SystemIOUtilities.SanitizeFileName(userId);
-            if (!_contexts.ContainsKey(fileName))
+            try
             {
-                var databasePath = Path.Combine(_baseDirectoryPath, $"{fileName}.db");
-                var connectionString = $"Filename={databasePath}";
+                if (!_contexts.ContainsKey(fileName))
+                {
+                    var databasePath = Path.Combine(_baseDirectoryPath, $"{fileName}.db");
+                    var connectionString = $"Filename={databasePath}";
 
-                var options = new DbContextOptionsBuilder<ConversationContext>()
-                    .UseSqlite(connectionString)
-                    .Options;
+                    var options = new DbContextOptionsBuilder<ConversationContext>()
+                        .UseSqlite(connectionString)
+                        .Options;
 
-                var context = new ConversationContext(options);
-                context.Database.EnsureCreated();
-                _contexts[fileName] = context;
-            }
-
+                    var context = new ConversationContext(options);
+                    context.Database.EnsureCreated();
+                    _contexts[fileName] = context;
+                }
+            } catch (Exception ex) { Console.WriteLine(ex); }
             return _contexts[fileName];
         }
 

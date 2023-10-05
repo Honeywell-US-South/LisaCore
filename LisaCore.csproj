@@ -25,6 +25,15 @@
     <None Remove="edu\**" />
     <None Remove="lib\vocabulary\**" />
   </ItemGroup>
+  
+
+  <ItemGroup>
+    <Compile Remove="MachineLearning\OpenNLP\Tools\Ling\AnnotationLookup.cs" />
+    <Compile Remove="MachineLearning\OpenNLP\Tools\Parser\Common\ParserGrammar.cs" />
+    <Compile Remove="MachineLearning\OpenNLP\Tools\Parser\LexParser\LexicalizedParser.cs" />
+    <Compile Remove="MachineLearning\OpenNLP\Tools\Util\Process\PTBTokenizer.cs" />
+    <Compile Remove="MachineLearning\OpenNLP\Tools\Util\Process\WhitespaceTokenizer.cs" />
+  </ItemGroup>
 
   <ItemGroup>
     <None Remove="lib\aiml\ahu.aiml" />
@@ -117,11 +126,15 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="7.0.11" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
+    <PackageReference Include="Microsoft.Extensions.ML" Version="2.0.1" />
     <PackageReference Include="Microsoft.ML" Version="2.0.1" />
     <PackageReference Include="Microsoft.ML.OnnxRuntime" Version="1.15.1" />
     <PackageReference Include="Microsoft.ML.OnnxTransformer" Version="2.0.1" />
     <PackageReference Include="Microsoft.ML.TimeSeries" Version="2.0.1" />
     <PackageReference Include="Microsoft.Recognizers.Text.DateTime" Version="1.8.8" />
+    <PackageReference Include="System.Management" Version="7.0.2" />
+    <PackageReference Include="System.Runtime.Caching" Version="7.0.0" />
     <PackageReference Include="UnidecodeSharpCore" Version="2.0.1" />
     <PackageReference Include="WeCantSpell.Hunspell" Version="4.0.0" />
   </ItemGroup>
@@ -153,6 +166,8 @@
 
   <ItemGroup>
     <Folder Include="lib\models\" />
+    <Folder Include="MachineLearning\OpenNLP\Tools\Parser\Common\" />
+    <Folder Include="MachineLearning\OpenNLP\Tools\Parser\LexParser\" />
   </ItemGroup>
 
   <ItemGroup>

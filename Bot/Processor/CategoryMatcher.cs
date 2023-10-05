@@ -1,5 +1,5 @@
 ﻿using LisaCore.Bot.Learn;
-using LisaCore.Nlp.BERT;
+using LisaCore.MachineLearning.OpenNLP.Tools.BERT;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
