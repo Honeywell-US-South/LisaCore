@@ -19,12 +19,13 @@ namespace LisaCore
         private Bert? _bert = null;
         private BrickSchemaManager _graph;
         private BehaviorManager _behaviorManager;
+        private AlertManager _alertManager;
+
         private LLMIntentClassifier _intentClassifer;
 
         public Lisa(ILogger? logger = null)
         {
             _logger = logger;
-            _graph = new BrickSchemaManager();
             InitCodeProcessor();
         }
 
@@ -33,7 +34,7 @@ namespace LisaCore
             _logger = logger;
             InitCodeProcessor();
             InitKnowledge(aiKnowledgeDirectory);
-            _behaviorManager = new BehaviorManager();
+            StartGraphManager();
         }
 
         public Lisa(string aiKnowledgeDirectory, string bertModelOnnxFilePath, string bertModelVocabularyFilePath, bool useGpu = false, ILogger? logger = null)
@@ -41,8 +42,8 @@ namespace LisaCore
             _logger = logger;
             InitCodeProcessor();
             InitKnowledge(aiKnowledgeDirectory);
-            _behaviorManager = new BehaviorManager();
             InitNlp(bertModelVocabularyFilePath, bertModelOnnxFilePath, useGpu);
+            StartGraphManager();
         }
 
         public Lisa(string aiKnowledgeDirectory, string bertModelOnnxFilePath, string bertModelVocabularyFilePath, string nlpContextFilePath, bool useGpu = false, ILogger? logger = null)
@@ -50,10 +51,25 @@ namespace LisaCore
             _logger = logger;
             InitCodeProcessor();
             InitKnowledge(aiKnowledgeDirectory);
-            _behaviorManager = new BehaviorManager();
+            
             InitNlp(bertModelVocabularyFilePath, bertModelOnnxFilePath, nlpContextFilePath, useGpu);
+            StartGraphManager();
         }
 
+        private void StartGraphManager(string graphDir = "")
+        {
+            if (string.IsNullOrEmpty(graphDir))
+            {
+                _graph = new BrickSchemaManager();
+            } else
+            {
+                Helpers.SystemIOUtilities.CreateDirectoryIfNotExists(graphDir);
+                string brickFile = Path.Combine(graphDir, "graph.json");
+                _graph = new BrickSchemaManager(brickFile);
+            }
+            _behaviorManager = new BehaviorManager();
+            _alertManager = new AlertManager(_graph);
+        }
 
 
         private void InitCodeProcessor()
@@ -67,8 +83,7 @@ namespace LisaCore
         public void InitKnowledge(string aiKnowledgeDirectory)
         {
             Helpers.SystemIOUtilities.CreateDirectoryIfNotExists(aiKnowledgeDirectory);
-            string brickFile = Path.Combine(aiKnowledgeDirectory, "graph.json");
-            _graph = new BrickSchemaManager(brickFile);
+       
             _intentClassifer = new LLMIntentClassifier(aiKnowledgeDirectory);
             _aiKnowledgeDirectory = aiKnowledgeDirectory;
             _chatlBot = new Chat(_aiKnowledgeDirectory);
