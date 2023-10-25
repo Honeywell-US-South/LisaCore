@@ -34,7 +34,7 @@ namespace LisaCore
             _logger = logger;
             InitCodeProcessor();
             InitKnowledge(aiKnowledgeDirectory);
-            StartGraphManager();
+            StartGraphManager(aiKnowledgeDirectory);
         }
 
         public Lisa(string aiKnowledgeDirectory, string bertModelOnnxFilePath, string bertModelVocabularyFilePath, bool useGpu = false, ILogger? logger = null)
@@ -43,7 +43,7 @@ namespace LisaCore
             InitCodeProcessor();
             InitKnowledge(aiKnowledgeDirectory);
             InitNlp(bertModelVocabularyFilePath, bertModelOnnxFilePath, useGpu);
-            StartGraphManager();
+            StartGraphManager(aiKnowledgeDirectory);
         }
 
         public Lisa(string aiKnowledgeDirectory, string bertModelOnnxFilePath, string bertModelVocabularyFilePath, string nlpContextFilePath, bool useGpu = false, ILogger? logger = null)
@@ -53,7 +53,7 @@ namespace LisaCore
             InitKnowledge(aiKnowledgeDirectory);
             
             InitNlp(bertModelVocabularyFilePath, bertModelOnnxFilePath, nlpContextFilePath, useGpu);
-            StartGraphManager();
+            StartGraphManager(aiKnowledgeDirectory);
         }
 
         private void StartGraphManager(string graphDir = "")
