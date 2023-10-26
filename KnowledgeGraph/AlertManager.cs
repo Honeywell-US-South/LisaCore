@@ -58,7 +58,7 @@ namespace LisaCore.KnowledgeGraph
                             {
 
                                 if (alert.Status != BrickSchema.Net.Alerts.AlertStatuses.Active
-                                    && alert.Status != BrickSchema.Net.Alerts.AlertStatuses.WorkAssgined
+                                    && alert.Status != BrickSchema.Net.Alerts.AlertStatuses.WorkAssigned
                                     && alert.Status != BrickSchema.Net.Alerts.AlertStatuses.RtnWorkAssigned)
                                 {
                                     alert.Status = BrickSchema.Net.Alerts.AlertStatuses.Active;
@@ -70,12 +70,12 @@ namespace LisaCore.KnowledgeGraph
                                     });
                                 } else if (alert.Status != BrickSchema.Net.Alerts.AlertStatuses.RtnWorkAssigned)
                                 {
-                                    alert.Status = BrickSchema.Net.Alerts.AlertStatuses.WorkAssgined;
+                                    alert.Status = BrickSchema.Net.Alerts.AlertStatuses.WorkAssigned;
                                     alert.Timestamp = DateTime.UtcNow;
                                     alert.Activities.Add(new()
                                     {
                                         Activity = "Status changed.",
-                                        Description = BrickSchema.Net.Alerts.AlertStatuses.WorkAssgined.ToString()
+                                        Description = BrickSchema.Net.Alerts.AlertStatuses.WorkAssigned.ToString()
                                     });
                                 } else
                                 {
@@ -118,7 +118,7 @@ namespace LisaCore.KnowledgeGraph
                                         Description = BrickSchema.Net.Alerts.AlertStatuses.ReturnToNormal.ToString()
                                     });
                                    
-                                } else if (alert.Status == BrickSchema.Net.Alerts.AlertStatuses.WorkAssgined)
+                                } else if (alert.Status == BrickSchema.Net.Alerts.AlertStatuses.WorkAssigned)
                                 {
                                     alert.Status = BrickSchema.Net.Alerts.AlertStatuses.RtnWorkAssigned;
                                     alert.Timestamp = DateTime.UtcNow;
@@ -129,7 +129,7 @@ namespace LisaCore.KnowledgeGraph
                                     });
                                 }
 
-                                if (!alert.Latch && alert.Status != BrickSchema.Net.Alerts.AlertStatuses.WorkAssgined 
+                                if (!alert.Latch && alert.Status != BrickSchema.Net.Alerts.AlertStatuses.WorkAssigned 
                                     && alert.Status != BrickSchema.Net.Alerts.AlertStatuses.RtnWorkAssigned)
                                 {
                                     alert.Status = BrickSchema.Net.Alerts.AlertStatuses.Cleared;
