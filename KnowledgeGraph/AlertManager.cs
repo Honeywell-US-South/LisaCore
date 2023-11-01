@@ -54,7 +54,7 @@ namespace LisaCore.KnowledgeGraph
                         {
                             var faults = equipment.GetBehaviorFaultValues();
                             var alert = equipment.GetAlert();
-                            if (faults?.Count > 0)
+                            if (faults.Any())
                             {
 
                                 if (alert.Status != BrickSchema.Net.Alerts.AlertStatuses.Active
@@ -141,6 +141,8 @@ namespace LisaCore.KnowledgeGraph
                                     });
                                 }
                             }
+
+                            equipment.SetAlert(alert);
                         }
                     }
                 }
