@@ -57,7 +57,16 @@ namespace LisaCore.KnowledgeGraph
                             alert.Activities = new();
                             if (faults.Where(x=>x.GetValue<bool>()).Any())
                             {
-
+                                foreach (var fault in faults)
+                                {
+                                    if (fault.BehaviorEntityTypeName.ToLower().StartsWith("core"))
+                                    {
+                                        double Priority = 100;
+                                    } else
+                                    {
+                                        double Priority = 50;
+                                    }
+                                }
                                 if (alert.Status != BrickSchema.Net.Alerts.AlertStatuses.Active
                                     && alert.Status != BrickSchema.Net.Alerts.AlertStatuses.WorkAssigned
                                     && alert.Status != BrickSchema.Net.Alerts.AlertStatuses.RtnWorkAssigned)
