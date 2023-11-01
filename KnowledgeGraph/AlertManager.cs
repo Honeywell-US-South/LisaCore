@@ -54,7 +54,8 @@ namespace LisaCore.KnowledgeGraph
                         {
                             var faults = equipment.GetBehaviorFaultValues();
                             var alert = equipment.GetAlert();
-                            if (faults.Any())
+                            alert.Activities = new();
+                            if (faults.Where(x=>x.GetValue<bool>()).Any())
                             {
 
                                 if (alert.Status != BrickSchema.Net.Alerts.AlertStatuses.Active
@@ -63,20 +64,12 @@ namespace LisaCore.KnowledgeGraph
                                 {
                                     alert.Status = BrickSchema.Net.Alerts.AlertStatuses.Active;
                                     alert.Timestamp = DateTime.UtcNow;
-                                    alert.Activities.Add(new()
-                                    {
-                                        Activity = "Status changed.",
-                                        Description = BrickSchema.Net.Alerts.AlertStatuses.Active.ToString()
-                                    });
+                                    
                                 } else if (alert.Status != BrickSchema.Net.Alerts.AlertStatuses.RtnWorkAssigned)
                                 {
                                     alert.Status = BrickSchema.Net.Alerts.AlertStatuses.WorkAssigned;
                                     alert.Timestamp = DateTime.UtcNow;
-                                    alert.Activities.Add(new()
-                                    {
-                                        Activity = "Status changed.",
-                                        Description = BrickSchema.Net.Alerts.AlertStatuses.WorkAssigned.ToString()
-                                    });
+                                   
                                 } else
                                 {
                                     var clone = alert.Clone(includeActivities:true);
@@ -87,46 +80,31 @@ namespace LisaCore.KnowledgeGraph
                                 double priority = 100;
                                 if (alert.Severity != serverity)
                                 {
-                                    alert.Activities.Add(new()
-                                    {
-                                        Activity = "Severity changed.",
-                                        Description = alert.Severity.ToString("P2")
-                                    });
+                                    
                                     alert.Severity = serverity;
                                 }
 
                                 if (alert.Priority != priority)
                                 {
-                                    alert.Activities.Add(new()
-                                    {
-                                        Activity = "Priority changed.",
-                                        Description = alert.Priority.ToString("P2")
-                                    });
+                                    
                                     alert.Priority = priority;
                                 }
 
                             }
                             else
                             {
+                                alert.FaultBehaviorIds = new();
                                 if (alert.Status == BrickSchema.Net.Alerts.AlertStatuses.Active)
                                 {
                                     alert.Status = BrickSchema.Net.Alerts.AlertStatuses.ReturnToNormal;
                                     alert.Timestamp = DateTime.UtcNow;
-                                    alert.Activities.Add(new()
-                                    {
-                                        Activity = "Status changed.",
-                                        Description = BrickSchema.Net.Alerts.AlertStatuses.ReturnToNormal.ToString()
-                                    });
+                                    
                                    
                                 } else if (alert.Status == BrickSchema.Net.Alerts.AlertStatuses.WorkAssigned)
                                 {
                                     alert.Status = BrickSchema.Net.Alerts.AlertStatuses.RtnWorkAssigned;
                                     alert.Timestamp = DateTime.UtcNow;
-                                    alert.Activities.Add(new()
-                                    {
-                                        Activity = "Status changed.",
-                                        Description = BrickSchema.Net.Alerts.AlertStatuses.RtnWorkAssigned.ToString()
-                                    });
+                                   
                                 }
 
                                 if (!alert.Latch && alert.Status != BrickSchema.Net.Alerts.AlertStatuses.WorkAssigned 
@@ -134,11 +112,7 @@ namespace LisaCore.KnowledgeGraph
                                 {
                                     alert.Status = BrickSchema.Net.Alerts.AlertStatuses.Cleared;
                                     alert.Timestamp = DateTime.UtcNow;
-                                    alert.Activities.Add(new()
-                                    {
-                                        Activity = "Status changed.",
-                                        Description = BrickSchema.Net.Alerts.AlertStatuses.Cleared.ToString()
-                                    });
+                                    
                                 }
                             }
 
