@@ -46,26 +46,28 @@ namespace LisaCore.KnowledgeGraph
 
                 lock (lockObject)
                 {
+                   
                     //Do work
                     var bricks = _graph.GetEntities();
                     foreach (var brick in bricks)
                     {
                         if (brick is Equipment equipment)
                         {
+
+                            double serverity = equipment.GetRelationshipDependancySore();
+                            double priority = 0;
                             var faults = equipment.GetBehaviorFaultValues();
                             var alert = equipment.GetAlert();
                             alert.Activities = new();
-                            if (faults.Where(x=>x.GetValue<bool>()).Any())
+                            if (faults.Where(x => x.GetValue<bool>()).Any())
                             {
                                 foreach (var fault in faults)
                                 {
-                                    if (fault.BehaviorEntityTypeName.ToLower().StartsWith("core"))
-                                    {
-                                        double Priority = 100;
-                                    } else
-                                    {
-                                        double Priority = 50;
-                                    }
+                                    var behavior = equipment.GetBehaviorById(fault.BehaviorId);
+
+                                    double p = (fault.Weight / 2) * 100;
+                                    priority = Math.Max(p, priority);
+
                                 }
                                 if (alert.Status != BrickSchema.Net.Alerts.AlertStatuses.Active
                                     && alert.Status != BrickSchema.Net.Alerts.AlertStatuses.WorkAssigned
@@ -73,31 +75,22 @@ namespace LisaCore.KnowledgeGraph
                                 {
                                     alert.Status = BrickSchema.Net.Alerts.AlertStatuses.Active;
                                     alert.Timestamp = DateTime.UtcNow;
-                                    
-                                } else if (alert.Status != BrickSchema.Net.Alerts.AlertStatuses.RtnWorkAssigned)
+
+                                }
+                                else if (alert.Status != BrickSchema.Net.Alerts.AlertStatuses.RtnWorkAssigned)
                                 {
                                     alert.Status = BrickSchema.Net.Alerts.AlertStatuses.WorkAssigned;
                                     alert.Timestamp = DateTime.UtcNow;
-                                   
-                                } else
+
+                                }
+                                else
                                 {
-                                    var clone = alert.Clone(includeActivities:true);
+                                    var clone = alert.Clone(includeActivities: true);
                                     alert.Set(new() { Status = BrickSchema.Net.Alerts.AlertStatuses.Active });
                                 }
 
-                                double serverity = 100;
-                                double priority = 100;
-                                if (alert.Severity != serverity)
-                                {
-                                    
-                                    alert.Severity = serverity;
-                                }
 
-                                if (alert.Priority != priority)
-                                {
-                                    
-                                    alert.Priority = priority;
-                                }
+
 
                             }
                             else
@@ -107,23 +100,28 @@ namespace LisaCore.KnowledgeGraph
                                 {
                                     alert.Status = BrickSchema.Net.Alerts.AlertStatuses.ReturnToNormal;
                                     alert.Timestamp = DateTime.UtcNow;
-                                    
-                                   
-                                } else if (alert.Status == BrickSchema.Net.Alerts.AlertStatuses.WorkAssigned)
+
+
+                                }
+                                else if (alert.Status == BrickSchema.Net.Alerts.AlertStatuses.WorkAssigned)
                                 {
                                     alert.Status = BrickSchema.Net.Alerts.AlertStatuses.RtnWorkAssigned;
                                     alert.Timestamp = DateTime.UtcNow;
-                                   
+
                                 }
 
-                                if (!alert.Latch && alert.Status != BrickSchema.Net.Alerts.AlertStatuses.WorkAssigned 
+                                if (!alert.Latch && alert.Status != BrickSchema.Net.Alerts.AlertStatuses.WorkAssigned
                                     && alert.Status != BrickSchema.Net.Alerts.AlertStatuses.RtnWorkAssigned)
                                 {
                                     alert.Status = BrickSchema.Net.Alerts.AlertStatuses.Cleared;
                                     alert.Timestamp = DateTime.UtcNow;
-                                    
+
                                 }
                             }
+
+
+                            alert.Severity = serverity;
+                            alert.Priority = priority;
 
                             equipment.SetAlert(alert);
                         }
