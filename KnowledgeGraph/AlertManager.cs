@@ -54,19 +54,22 @@ namespace LisaCore.KnowledgeGraph
                         if (brick is Equipment equipment)
                         {
 
-                            double serverity = equipment.GetRelationshipDependancySore();
+                            double serverity = 0;
                             double priority = 0;
                             var faults = equipment.GetBehaviorFaultValues();
                             var alert = equipment.GetAlert();
                             alert.Activities = new();
                             if (faults.Where(x => x.GetValue<bool>()).Any())
                             {
+                                serverity = equipment.GetRelationshipDependancySore();
                                 foreach (var fault in faults)
                                 {
                                     var behavior = equipment.GetBehaviorById(fault.BehaviorId);
-
-                                    double p = (fault.Weight / 2) * 100;
-                                    priority = Math.Max(p, priority);
+                                    if (fault.Weight > 0)
+                                    {
+                                        double p = (fault.Weight / 2) * 100;
+                                        priority = Math.Max(p, priority);
+                                    }
 
                                 }
                                 if (alert.Status != BrickSchema.Net.Alerts.AlertStatuses.Active
