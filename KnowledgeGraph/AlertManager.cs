@@ -80,7 +80,7 @@ namespace LisaCore.KnowledgeGraph
                                     alert.Timestamp = DateTime.UtcNow;
 
                                 }
-                                else if (alert.Status != BrickSchema.Net.Alerts.AlertStatuses.RtnWorkAssigned)
+                                else if (alert.Status == BrickSchema.Net.Alerts.AlertStatuses.RtnWorkAssigned)
                                 {
                                     alert.Status = BrickSchema.Net.Alerts.AlertStatuses.WorkAssigned;
                                     alert.Timestamp = DateTime.UtcNow;
