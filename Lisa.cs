@@ -6,6 +6,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.Extensions.Logging;
 using LisaCore.MachineLearning.LLM.Intent;
 using LisaCore.MachineLearning.OpenNLP.Tools.BERT;
+using LisaCore.AI;
 
 namespace LisaCore
 {
@@ -20,7 +21,7 @@ namespace LisaCore
         private BrickSchemaManager _graph;
         private BehaviorManager _behaviorManager;
         private AlertManager _alertManager;
-
+        private AITech? _aiTech;
         private LLMIntentClassifier _intentClassifer;
 
         public Lisa(ILogger? logger = null)
@@ -83,14 +84,23 @@ namespace LisaCore
         public void InitKnowledge(string aiKnowledgeDirectory)
         {
             Helpers.SystemIOUtilities.CreateDirectoryIfNotExists(aiKnowledgeDirectory);
-       
-            _intentClassifer = new LLMIntentClassifier(aiKnowledgeDirectory);
-            _aiKnowledgeDirectory = aiKnowledgeDirectory;
-            _chatlBot = new Chat(_aiKnowledgeDirectory);
-            if (_bert != null)
+            try
             {
-                _chatlBot?.SetBert(_bert);
+                _aiTech = new AITech(Path.Combine(aiKnowledgeDirectory, "mixtral-8x7b-v0.1.Q5_K_M.gguf"));
+                _aiTech.OnChatMessage += OnAiChatMessageReceived;
+                _aiTech.Start();
+            } catch (Exception ex)
+            {
+                _aiTech = null;
+                //throw new Exception("FailedAIInit", ex);
             }
+            //_intentClassifer = new LLMIntentClassifier(aiKnowledgeDirectory);
+            //_aiKnowledgeDirectory = aiKnowledgeDirectory;
+            //_chatlBot = new Chat(_aiKnowledgeDirectory);
+            //if (_bert != null)
+            //{
+            //    _chatlBot?.SetBert(_bert);
+            //}
         }
 
     }

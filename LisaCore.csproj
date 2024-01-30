@@ -117,6 +117,8 @@
 
   <ItemGroup>
     <PackageReference Include="BrickSchema.Net" Version="1.3.30" />
+    <PackageReference Include="LLamaSharp" Version="0.9.1" />
+    <PackageReference Include="LLamaSharp.Backend.Cpu" Version="0.9.1" />
     <PackageReference Include="Mages" Version="2.0.1" />
     <PackageReference Include="MathNet.Numerics" Version="5.0.0" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="4.7.0" />
@@ -169,7 +171,6 @@
     <Folder Include="lib\models\" />
     <Folder Include="MachineLearning\OpenNLP\Tools\Parser\Common\" />
     <Folder Include="MachineLearning\OpenNLP\Tools\Parser\LexParser\" />
-    <Folder Include="GPT\" />
   </ItemGroup>
 
   <ItemGroup>
