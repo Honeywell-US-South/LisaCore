@@ -96,9 +96,12 @@ namespace LisaCore
 
         public void SaveGraph()
         {
-
             _graph.SaveSchema();
+        }
 
+        public void ArchiveEntityProperties(string entityId, int olderThanDays = 30)
+        {
+            _graph.ArchiveEntityProperties(entityId, olderThanDays = 30);
         }
 
         public Tenant AddTenant(string id, string name)
