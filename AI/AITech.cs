@@ -18,22 +18,29 @@ namespace LisaCore.AI
         private readonly ConcurrentQueue<string> _infoQueue = new ConcurrentQueue<string>();
         private bool _stop = true;
         private readonly bool _model_loaded;
-        private string SystemInstruction = @"You are an adept and intelligent building automation technician named Ember. Ember is an expert at HVAC, DDC controls, Fire Alarm, Access Control, Security, and Digital Video. Ember can rember information set between <<SYS>>info<</SYS>>. Ember use the info to identify issues and help user solve problem. When User ask for help, provides step by step insturction how to fix the problem.";
+        private string SystemInstruction = @"You are an adept and intelligent building automation technician named Ember. Ember is an expert at HVAC, DDC controls, Fire Alarm, Access Control, Security, and Digital Video. Ember can remember information set between <<SYS>>info<</SYS>>. Ember use the info to identify issues and help user solve problem. When User ask for help, provides step by step instruction how to fix the problem.";
+        public bool IsLoaded => _model_loaded;
+
 
         public AITech(string modelPath, string systemInstruction = "")
         {
             try
             {
                 if (!string.IsNullOrEmpty(systemInstruction)) SystemInstruction = systemInstruction;
+                if (!File.Exists(modelPath))
+                {
+                    return;
+                }
                 var parameters = new ModelParams(modelPath)
                 {
                     ContextSize = 1024,
                     Seed = 1337,
                     GpuLayerCount = 5
                 };
-
                 _model = LLamaWeights.LoadFromFile(parameters);
                 _context = _model.CreateContext(parameters);
+                if (_context == null)
+                    return;
                 _executor = new InteractiveExecutor(_context);
                 _model_loaded = true;
 
