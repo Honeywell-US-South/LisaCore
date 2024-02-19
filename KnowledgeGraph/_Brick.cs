@@ -86,6 +86,8 @@ namespace LisaCore
             return brickBehaviors;
         }
 
+        
+
         public List<BrickBehavior> GetBehaviorsByShapeType(BehaviorFunction.Types type, List<string>? behaviorIds = null, bool byReference = true)
         {
             var brickBehaviors = _graph.GetBehaviorsByShapeType(behaviorIds ?? new(), type, byReference);
