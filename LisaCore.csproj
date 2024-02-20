@@ -15,8 +15,19 @@
     <Authors>d42y</Authors>
     <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
-  
 
+
+	<ItemGroup>
+		<None Remove="runtimes\win-x64\native\**\libllama.dll" />
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(UseAvx2)' == 'true'">
+		<Content Include="C:\Users\Administrator\.nuget\packages\llamasharp.backend.cpu\0.9.1\runtimes\win-x64\native\avx2\libllama.dll">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+			<Link>libllama.dll</Link>
+		</Content>
+	</ItemGroup>
+	
   <ItemGroup>
     <Compile Remove="edu\**" />
     <Compile Remove="lib\vocabulary\**" />
