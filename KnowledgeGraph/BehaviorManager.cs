@@ -37,7 +37,7 @@ namespace LisaCore.KnowledgeGraph
             }
         }
 
-        private void TimerCallback(object state)
+        private void TimerCallback(object? state)
         {
             if (isCallbackInProgress)
             {

@@ -27,7 +27,7 @@ namespace LisaCore
 
         public BrickSchemaManager Graph { get { return _graph; } }
 
-        public BrickEntity GetEntity(string id, bool byRefrence = false)
+        public BrickEntity? GetEntity(string id, bool byRefrence = false)
         {
             var entity = Graph.GetEntity(id, byRefrence);
             return entity;
@@ -589,7 +589,7 @@ namespace LisaCore
 
         }
 
-        private void ProcessOnBehaviorExecuted(object sender, BehaviorExecutedEventArgs e)
+        private void ProcessOnBehaviorExecuted(object? sender, BehaviorExecutedEventArgs e)
         {
             OnBehaviorExecuted?.Invoke(sender, e);
         }

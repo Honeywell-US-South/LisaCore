@@ -5,69 +5,38 @@ using LisaCore.Interpreter;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.Extensions.Logging;
 using LisaCore.MachineLearning.LLM.Intent;
-using LisaCore.MachineLearning.OpenNLP.Tools.BERT;
-using LisaCore.AI;
+using LisaCore.GPT;
 
 namespace LisaCore
 {
     public partial class Lisa
     {
         private string? _aiKnowledgeDirectory = null;
-        private Chat? _chatlBot = null;
         private CodeProcessor _codeProcessor;
         private ILogger? _logger;
         private Dictionary<string, List<Conversion>> _conversations;
-        private Bert? _bert = null;
         private BrickSchemaManager _graph;
         private BehaviorManager _behaviorManager;
         private AlertManager _alertManager;
-        private AITech? _aiTech;
+        private GPTChat? _gptChat;
         private LLMIntentClassifier _intentClassifer;
+        private readonly string _appName;
 
-        public Lisa(ILogger? logger = null)
+        public Lisa(string appName, string dataDirectory, ILogger? logger = null, bool loadGraph = true, bool loadCodeProcessor = false, bool loadGPT = false)
         {
+            _appName = appName;
             _logger = logger;
-            InitCodeProcessor();
+            if (loadCodeProcessor) InitCodeProcessor();
+            if (loadGPT) InitGPT(Path.Combine(dataDirectory, "GPT"));
+            if (loadGraph) InitKnowledgeGraph(dataDirectory);
         }
 
-        public Lisa(string aiKnowledgeDirectory, ILogger? logger = null)
+        private void InitKnowledgeGraph(string graphDir)
         {
-            _logger = logger;
-            InitCodeProcessor();
-            InitKnowledge(aiKnowledgeDirectory);
-            StartGraphManager(aiKnowledgeDirectory);
-        }
+            Helpers.SystemIOUtilities.CreateDirectoryIfNotExists(graphDir);
+            string brickFile = Path.Combine(graphDir, "graph.json");
+            _graph = new BrickSchemaManager(brickFile);
 
-        public Lisa(string aiKnowledgeDirectory, string bertModelOnnxFilePath, string bertModelVocabularyFilePath, bool useGpu = false, ILogger? logger = null)
-        {
-            _logger = logger;
-            InitCodeProcessor();
-            InitKnowledge(aiKnowledgeDirectory);
-            InitNlp(bertModelVocabularyFilePath, bertModelOnnxFilePath, useGpu);
-            StartGraphManager(aiKnowledgeDirectory);
-        }
-
-        public Lisa(string aiKnowledgeDirectory, string bertModelOnnxFilePath, string bertModelVocabularyFilePath, string nlpContextFilePath, bool useGpu = false, ILogger? logger = null)
-        {
-            _logger = logger;
-            InitCodeProcessor();
-            InitKnowledge(aiKnowledgeDirectory);
-            
-            InitNlp(bertModelVocabularyFilePath, bertModelOnnxFilePath, nlpContextFilePath, useGpu);
-            StartGraphManager(aiKnowledgeDirectory);
-        }
-
-        private void StartGraphManager(string graphDir = "")
-        {
-            if (string.IsNullOrEmpty(graphDir))
-            {
-                _graph = new BrickSchemaManager();
-            } else
-            {
-                Helpers.SystemIOUtilities.CreateDirectoryIfNotExists(graphDir);
-                string brickFile = Path.Combine(graphDir, "graph.json");
-                _graph = new BrickSchemaManager(brickFile);
-            }
             _behaviorManager = new BehaviorManager();
             _alertManager = new AlertManager(_graph);
         }
@@ -81,26 +50,21 @@ namespace LisaCore
         }
 
 
-        public void InitKnowledge(string aiKnowledgeDirectory)
+        public void InitGPT(string gptModelDirectory)
         {
-            Helpers.SystemIOUtilities.CreateDirectoryIfNotExists(aiKnowledgeDirectory);
+            Helpers.SystemIOUtilities.CreateDirectoryIfNotExists(gptModelDirectory);
             try
             {
-                _aiTech = new AITech(Path.Combine(aiKnowledgeDirectory, "mixtral-8x7b-v0.1.Q5_K_M.gguf"));
-                _aiTech.OnChatMessage += OnAiChatMessageReceived;
-                _aiTech.Start();
+                _gptChat = new GPTChat(_appName, Path.Combine(gptModelDirectory, "mixtral-8x7b-v0.1.Q5_K_M.gguf"));
+                _gptChat.OnGPTChatMessage += OnGPTChatMessageReceived;
+                _gptChat.OnGPTSpeak += OnGPTSpeakReceived; ;
+                _gptChat.Start();
             } catch (Exception ex)
             {
-                _aiTech = null;
-                //throw new Exception("FailedAIInit", ex);
+                _gptChat = null;
+                throw new Exception("FailedGPTChatInit", ex);
             }
-            //_intentClassifer = new LLMIntentClassifier(aiKnowledgeDirectory);
-            //_aiKnowledgeDirectory = aiKnowledgeDirectory;
-            //_chatlBot = new Chat(_aiKnowledgeDirectory);
-            //if (_bert != null)
-            //{
-            //    _chatlBot?.SetBert(_bert);
-            //}
+
         }
 
     }

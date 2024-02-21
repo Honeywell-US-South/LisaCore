@@ -47,6 +47,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="GPT\Settings\encoder.json" />
+    <None Remove="GPT\Settings\vocab.bpe" />
     <None Remove="lib\aiml\ahu.aiml" />
     <None Remove="lib\aiml\chiller.aiml" />
     <None Remove="lib\aiml\chws.aiml" />
@@ -71,6 +73,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="GPT\Settings\encoder.json" />
+    <EmbeddedResource Include="GPT\Settings\vocab.bpe" />
     <EmbeddedResource Include="lib\aiml\ahu.aiml" />
     <EmbeddedResource Include="lib\aiml\chiller.aiml" />
     <EmbeddedResource Include="lib\aiml\chws.aiml" />

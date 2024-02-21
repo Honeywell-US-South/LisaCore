@@ -22,7 +22,7 @@ namespace LisaCore.KnowledgeGraph
             timer = new Timer(TimerCallback, null, TimeSpan.Zero, TimeSpan.FromSeconds(60));
         }
 
-        private void TimerCallback(object state)
+        private void TimerCallback(object? state)
         {
             if (isCallbackInProgress)
             {
