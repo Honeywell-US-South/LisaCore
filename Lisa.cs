@@ -27,7 +27,7 @@ namespace LisaCore
             _appName = appName;
             _logger = logger;
             if (loadCodeProcessor) InitCodeProcessor();
-            if (loadGPT) InitGPT(Path.Combine(dataDirectory, "GPT"));
+            if (loadGPT) InitGPT(Path.Combine("Lisa", "Llama2", "llama-2-7b-guanaco-qlora.Q4_K_M.gguf"));
             if (loadGraph) InitKnowledgeGraph(dataDirectory);
         }
 
@@ -50,12 +50,13 @@ namespace LisaCore
         }
 
 
-        public void InitGPT(string gptModelDirectory)
+        public void InitGPT(string gptModelFile)
         {
-            Helpers.SystemIOUtilities.CreateDirectoryIfNotExists(gptModelDirectory);
+
             try
             {
-                _gptChat = new GPTChat(_appName, Path.Combine(gptModelDirectory, "mixtral-8x7b-v0.1.Q5_K_M.gguf"));
+                if (!File.Exists(gptModelFile)) { _gptChat = null;  return; }
+                _gptChat = new GPTChat(_appName, gptModelFile);
                 _gptChat.OnGPTChatMessage += OnGPTChatMessageReceived;
                 _gptChat.OnGPTSpeak += OnGPTSpeakReceived; ;
                 _gptChat.Start();
