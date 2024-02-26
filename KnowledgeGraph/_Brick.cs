@@ -14,6 +14,7 @@ using System.Xml.Linq;
 using System.Reflection.Metadata.Ecma335;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using BrickSchema.Net.Behaviors;
+using BrickSchema.Net.ThreadSafeObjects;
 
 //Keep this as LisaCore
 namespace LisaCore
@@ -33,40 +34,40 @@ namespace LisaCore
             return entity;
         }
 
-        public List<BrickEntity> GetEntities(List<string>? entityIds = null, bool byReference = true)
+        public ThreadSafeList<BrickEntity> GetEntities(List<string>? entityIds = null, bool byReference = true)
         {
-            List <BrickEntity>? entities= null;
+            ThreadSafeList<BrickEntity>? entities= null;
             if (entityIds == null || entityIds?.Count == 0)
             {
                 entities = Graph.GetEntities(byReference);
             }
             else
             {
-                entities = Graph.GetEntities(byReference).Where(x=> entityIds?.Contains(x.Id)??false).ToList();
+                entities = Graph.GetEntities(byReference).Where(x=> entityIds?.Contains(x.Id)??false).ToThreadSafeList();
             }
             return entities;
         }
-        public List<BrickEntity> GetEntities<T>(List<string>? entityIds = null, bool byReference = true)
+        public ThreadSafeList<BrickEntity> GetEntities<T>(List<string>? entityIds = null, bool byReference = true)
         {
-            List<BrickEntity>? entities = null;
+            ThreadSafeList<BrickEntity>? entities = null;
             if (entityIds == null || entityIds?.Count == 0)
             {
                 entities = Graph.GetEntities<T>(byReference);
             }
             else
             {
-                entities = Graph.GetEntities<T>(byReference).Where(x => entityIds?.Contains(x.Id) ?? false).ToList();
+                entities = Graph.GetEntities<T>(byReference).Where(x => entityIds?.Contains(x.Id) ?? false).ToThreadSafeList();
             }
             return entities;
         }
 
-        public List<BrickEntity> GetEquipmentEntities(List<string>? equipmentIds = null, bool byReference = true)
+        public ThreadSafeList<BrickEntity> GetEquipmentEntities(List<string>? equipmentIds = null, bool byReference = true)
         {
-            List<BrickEntity> equipments = _graph.GetEquipments(equipmentIds ?? new(), byReference); ;
+            ThreadSafeList<BrickEntity> equipments = _graph.GetEquipments(equipmentIds ?? new(), byReference); ;
             return equipments;
         }
 
-        public List<BrickBehavior> GetEquipmentBehaviors(string equipmentId, bool byReference = true)
+        public ThreadSafeList<BrickBehavior> GetEquipmentBehaviors(string equipmentId, bool byReference = true)
         {
             var brickBehaviors = _graph.GetEquipmentBehaviors(equipmentId, byReference);
             return brickBehaviors;
@@ -78,7 +79,7 @@ namespace LisaCore
             return brickBehaviors;
         }
 
-        public List<BrickBehavior> GetBehaviors(List<string>? behaviorIds = null, bool byReference = true)
+        public ThreadSafeList<BrickBehavior> GetBehaviors(List<string>? behaviorIds = null, bool byReference = true)
         {
             var brickBehaviors = _graph.GetBehaviors(behaviorIds ?? new(), byReference);
 
@@ -88,7 +89,7 @@ namespace LisaCore
 
         
 
-        public List<BrickBehavior> GetBehaviorsByShapeType(BehaviorFunction.Types type, List<string>? behaviorIds = null, bool byReference = true)
+        public ThreadSafeList<BrickBehavior> GetBehaviorsByShapeType(BehaviorFunction.Types type, List<string>? behaviorIds = null, bool byReference = true)
         {
             var brickBehaviors = _graph.GetBehaviorsByShapeType(behaviorIds ?? new(), type, byReference);
 
