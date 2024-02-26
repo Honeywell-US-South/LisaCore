@@ -142,7 +142,7 @@ namespace OpenNLP.Tools.Trees.TRegex
             public override bool Matches()
             {
                 // also known as "FUN WITH LOGIC"
-                //Console.WriteLine("matches()");
+                //Console.Out.WriteLineAsync("matches()");
                 if (considerAll)
                 {
                     // these are the cases where all children must be considered to match

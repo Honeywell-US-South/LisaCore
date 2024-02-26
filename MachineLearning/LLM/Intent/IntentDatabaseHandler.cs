@@ -83,7 +83,7 @@ namespace LisaCore.MachineLearning.LLM.Intent
                     updateCmd.ExecuteNonQuery();
                     return true;
                 }
-            } catch (Exception ex) { Console.WriteLine(ex); }
+            } catch (Exception ex) { Console.Out.WriteLineAsync(ex.ToString()); }
             return false;
         }
 

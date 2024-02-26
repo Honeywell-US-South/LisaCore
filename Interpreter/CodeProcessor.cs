@@ -219,7 +219,7 @@ namespace LisaCore.Interpreter
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error: {ex.Message}");
+                Console.Out.WriteLineAsync($"Error: {ex.Message}");
                 return (null, ex.InnerException);
             }
         }

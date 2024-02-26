@@ -370,7 +370,7 @@ namespace OpenNLP.Tools.Parser
 					}
 					else if (subPartSpan.Contains(constituentSpan)) 
 					{
-						//System.Console.WriteLine("Parse.insert:subPart contains con");
+						//System.Console.Out.WriteLineAsync("Parse.insert:subPart contains con");
 						subPart.Insert(constituent);
 						return;
 					}

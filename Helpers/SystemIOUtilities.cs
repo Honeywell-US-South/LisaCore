@@ -19,7 +19,7 @@ namespace LisaCore.Helpers
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error creating directory '{directoryPath}': {ex.Message}");
+                Console.Out.WriteLineAsync($"Error creating directory '{directoryPath}': {ex.Message}");
             }
         }
 

@@ -58,7 +58,7 @@ namespace LisaCore.Bot.Processor
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"Error loading AIML file: {ex.Message}");
+                    Console.Out.WriteLineAsync($"Error loading AIML file: {ex.Message}");
                 }
             }
         }
@@ -105,7 +105,7 @@ namespace LisaCore.Bot.Processor
                     }
                     catch (Exception ex)
                     {
-                        Console.WriteLine($"Error loading AIML file: {ex.Message}");
+                        Console.Out.WriteLineAsync($"Error loading AIML file: {ex.Message}");
                     }
                 }
             }

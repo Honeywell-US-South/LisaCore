@@ -355,7 +355,7 @@ namespace OpenNLP.Tools.Trees
         private static void AttachStrandedNodes(TreeGraphNode t, TreeGraphNode root, bool attach,
             Predicate<string> puncFilter, DirectedMultiGraph<TreeGraphNode, GrammaticalRelation> basicGraph)
         {
-            //Console.WriteLine("attachStrandedNodes() [t=" + t + "], [root=" + root + "], [attach=" + attach + "]");
+            //Console.Out.WriteLineAsync("attachStrandedNodes() [t=" + t + "], [root=" + root + "], [attach=" + attach + "]");
             if (t.IsLeaf())
             {
                 return;
@@ -394,17 +394,17 @@ namespace OpenNLP.Tools.Trees
             DirectedMultiGraph<TreeGraphNode, GrammaticalRelation> basicGraph,
             DirectedMultiGraph<TreeGraphNode, GrammaticalRelation> completeGraph)
         {
-            //Console.WriteLine("analyzeNode() [t=" + t + "], [root=" + root + "], [relationsCount=" + relations.Count() + "], [hf=" + hf + "]");
+            //Console.Out.WriteLineAsync("analyzeNode() [t=" + t + "], [root=" + root + "], [relationsCount=" + relations.Count() + "], [hf=" + hf + "]");
             if (t.IsPhrasal())
             {
                 // don't do leaves or preterminals!
-                //Console.WriteLine("isPhrasal = true");
+                //Console.Out.WriteLineAsync("isPhrasal = true");
                 TreeGraphNode tHigh = t.HighestNodeWithSameHead();
                 foreach (GrammaticalRelation egr in relations)
                 {
                     if (egr.IsApplicable(t))
                     {
-                        //Console.WriteLine("isApplicable = true");
+                        //Console.Out.WriteLineAsync("isApplicable = true");
                         foreach (TreeGraphNode u in egr.GetRelatedNodes(t, root, hf))
                         {
                             TreeGraphNode uHigh = u.HighestNodeWithSameHead();

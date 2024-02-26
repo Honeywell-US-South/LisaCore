@@ -178,7 +178,7 @@ namespace OpenNLP.Tools.Parser
 		private void AddNewEvents()
 		{
 			string parseString = mDataReader.NextToken();
-			//System.Console.WriteLine("ParserEventStream.AddNewEvents: " + parseString);
+			//System.Console.Out.WriteLineAsync("ParserEventStream.AddNewEvents: " + parseString);
             List<SharpEntropy.TrainingEvent> events = new List<SharpEntropy.TrainingEvent>();
 			Parse rootParse = Parse.FromParseString(parseString);
 			rootParse.UpdateHeads(mHeadRules);

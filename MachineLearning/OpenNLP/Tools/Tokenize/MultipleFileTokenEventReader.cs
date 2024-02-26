@@ -82,7 +82,7 @@ namespace OpenNLP.Tools.Tokenize
 	            var line = _streamReaders[_currentStreamReaderIndex].ReadLine();
 	            if (line != null)
 	            {
-                    //Console.WriteLine("Read line: {0}", line);
+                    //Console.Out.WriteLineAsync("Read line: {0}", line);
 	                return line;
 	            }
 	            else

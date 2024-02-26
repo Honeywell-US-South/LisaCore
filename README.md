@@ -63,11 +63,11 @@ string code = "return 1 = 2;";
 var (result, error) = await codeProcessor.ExcecuteAsync(code);
 if(error != null)
 {
-    Console.WriteLine($"Error: {error.Message}");
+    Console.Out.WriteLineAsync($"Error: {error.Message}");
 }
 else 
 {
-    Console.WriteLine($"Result: {result}");
+    Console.Out.WriteLineAsync($"Result: {result}");
 }
 
 ```
@@ -81,7 +81,7 @@ You can also provide a callback function to return a value during code processin
 ```csharp
 async Task MyCallBack(object? result) 
 {
-    Console.WriteLine($"Result from callback: {result}");
+    Console.Out.WriteLineAsync($"Result from callback: {result}");
 }
 string code = "int a = 1; Callback(a); return a + 3;";
 await codeProcessor.ExecuteAsync(code, MyCallBack);
@@ -109,10 +109,10 @@ if (isValid)
 }
 else 
 {
-    Console.WriteLine("Code is not valid. Errors:");
+    Console.Out.WriteLineAsync("Code is not valid. Errors:");
     foreach (var diagnostic in diagnostics)
     {
-	    Console.WriteLine(diagnostic.ToString());
+	    Console.Out.WriteLineAsync(diagnostic.ToString());
     }
 }
 
@@ -141,11 +141,11 @@ return person.Name;";
 var (result, error) = await codeProcessor.ExecuteAsync(code);
 if (error != null)
 {
-    Console.WriteLine($"Error: {error.Message}");
+    Console.Out.WriteLineAsync($"Error: {error.Message}");
 }
 else 
 {
-    Console.WriteLine($"Result: {result}");
+    Console.Out.WriteLineAsync($"Result: {result}");
 }
 
 ```
@@ -186,11 +186,11 @@ string code = "return MathFunctions.Square(5);";
 var (result, error) = await codeProcessor.ExecuteAsync(code);
 if (error != null)
 {
-    Console.WriteLine($"Error: {error.Message}");
+    Console.Out.WriteLineAsync($"Error: {error.Message}");
 }
 else 
 {
-    Console.WriteLine($"Result: {result}");
+    Console.Out.WriteLineAsync($"Result: {result}");
 }
 
 ```
@@ -206,10 +206,10 @@ return customers.Count;";
 var (result, error) = await codeProcessor.ExecuteAsync(code, null, dbContext);
 if (error != null)
 {
-    Console.WriteLine($"Error: {error.Message}");
+    Console.Out.WriteLineAsync($"Error: {error.Message}");
 }
 else 
 {
-    Console.WriteLine($"Result: {result}");
+    Console.Out.WriteLineAsync($"Result: {result}");
 }
 ```

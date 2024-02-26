@@ -116,15 +116,15 @@ namespace MachineLearningLibrary.Detect.RefrigerantLoop
             // Print out any issues
             if (issueList.Count > 0)
             {
-                Console.WriteLine($"The following issues were detected:");
+                Console.Out.WriteLineAsync($"The following issues were detected:");
                 foreach (var issue in issueList)
                 {
-                    Console.WriteLine($"- {issue}");
+                    Console.Out.WriteLineAsync($"- {issue}");
                 }
             }
             else
             {
-                Console.WriteLine("No issues detected.");
+                Console.Out.WriteLineAsync("No issues detected.");
             }
 
 

@@ -40,7 +40,7 @@ namespace LisaCore.Bot.Conversations
                     context.Database.EnsureCreated();
                     _contexts[fileName] = context;
                 }
-            } catch (Exception ex) { Console.WriteLine(ex); }
+            } catch (Exception ex) { Console.Out.WriteLineAsync(ex.ToString()); }
             return _contexts[fileName];
         }
 

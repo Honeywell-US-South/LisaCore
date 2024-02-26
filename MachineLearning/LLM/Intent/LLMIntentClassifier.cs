@@ -145,7 +145,7 @@ namespace LisaCore.MachineLearning.LLM.Intent
 
                     return intents;
                 }
-                catch (Exception ex) { Console.WriteLine(ex); }
+                catch (Exception ex) { Console.Out.WriteLineAsync(ex.ToString()); }
             }
             return new();
         }

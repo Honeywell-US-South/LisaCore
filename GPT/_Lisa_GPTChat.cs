@@ -25,7 +25,7 @@ namespace LisaCore
                     return true;
                 } catch (Exception ex)
                 {
-                    Console.WriteLine(ex.Message);
+                    Console.Out.WriteLineAsync(ex.Message);
                 }
             }
 
