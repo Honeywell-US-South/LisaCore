@@ -1,4 +1,5 @@
-﻿using LisaCore.GPT;
+﻿using BrickSchema.Net.Classes.Measureable;
+using LisaCore.GPT;
 
 //Keep this as LisaCore
 namespace LisaCore
@@ -11,7 +12,7 @@ namespace LisaCore
         public event EventHandler<ChatSpeak>? OnChatSpeak;
         public event EventHandler<ChatMessage>? OnChatMessage;
 
-        public async Task<bool> Chat(string userId, string conversationId, string input)
+        public async Task<bool> ChatAsync(string userId, string conversationId, string input)
         {
             if (_gptChat != null)
             {
@@ -21,7 +22,7 @@ namespace LisaCore
                     message.RequestBy = userId;
                     message.ConversationId = conversationId;
                     message.UserInput = input;
-                    await _gptChat.Chat(message);
+                    await _gptChat.ChatAsync(message);
                     return true;
                 } catch (Exception ex)
                 {
@@ -35,11 +36,13 @@ namespace LisaCore
         
         private void OnGPTSpeakReceived(object? sender, ChatSpeak message)
         {
+            
             OnChatSpeak?.Invoke(sender, message);
         }
 
         private void OnGPTChatMessageReceived(object? sender, ChatMessage message)
         {
+            if (message.OutputMessage.EndsWith("User:")) message.OutputMessage = message.OutputMessage.Substring(0, message.OutputMessage.Length - 5);
             OnChatMessage?.Invoke(sender, message);
         }
     }
