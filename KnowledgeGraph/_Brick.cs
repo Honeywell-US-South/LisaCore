@@ -34,7 +34,13 @@ namespace LisaCore
             return entity;
         }
 
-        public void GetEntities(ThreadSafeList<BrickEntity> entities, List<string>? entityIds = null)
+        public ThreadSafeList<BrickEntity> GetEntities()
+        {
+            return Graph.GetEntities();
+        }
+
+        public void UpdateBehaviorsProperty() => Graph.UpdateBehaviorsProperty();
+		public void GetEntities(ThreadSafeList<BrickEntity> entities, List<string>? entityIds = null)
         {
             
             if (entityIds == null || entityIds?.Count == 0)
