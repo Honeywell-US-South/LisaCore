@@ -128,7 +128,8 @@ namespace LisaCore
 
         public Tenant AddTenant(string id, string name)
         {
-            var tenant = _graph.AddTenant(id);
+
+			var tenant = _graph.AddTenant(id);
             tenant.Name = name;
             return tenant;
         }
@@ -334,11 +335,11 @@ namespace LisaCore
             switch (type)
             {
                 case EquipmentTypes.AHU:
+                    
                     var ahu = _graph.AddEquipmentHVACAHU(id);
                     if (!ahu.Name.Equals(name))
                     {
                         ahu.Name = name;
-                        
                     }
                     return ahu;
                 case EquipmentTypes.Chiller:
