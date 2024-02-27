@@ -34,29 +34,42 @@ namespace LisaCore
             return entity;
         }
 
-        public ThreadSafeList<BrickEntity> GetEntities(List<string>? entityIds = null, bool byReference = true)
+        public void GetEntities(ThreadSafeList<BrickEntity> entities, List<string>? entityIds = null)
         {
-            ThreadSafeList<BrickEntity>? entities= null;
+            
             if (entityIds == null || entityIds?.Count == 0)
             {
-                entities = Graph.GetEntities(byReference);
+                Graph.GetEntities(entities);
             }
             else
             {
-                entities = Graph.GetEntities(byReference).Where(x=> entityIds?.Contains(x.Id)??false).ToThreadSafeList();
+                ThreadSafeList<BrickEntity> list = new();
+
+				Graph.GetEntities(list);
+                entities = list.Where(x=> entityIds?.Contains(x.Id)??false).ToThreadSafeList();
             }
-            return entities;
+  
         }
-        public ThreadSafeList<BrickEntity> GetEntities<T>(List<string>? entityIds = null, bool byReference = true)
+        public BrickEntity? GetEntitiy(string id)
         {
-            ThreadSafeList<BrickEntity>? entities = null;
+            ThreadSafeList<BrickEntity> entities = new();
+			GetEntities(entities, new() { id});
+            return entities.FirstOrDefault();
+		}
+
+        public ThreadSafeList<BrickEntity> GetEntities<T>(ThreadSafeList<BrickEntity> entities, List<string>? entityIds = null)
+        {
+
             if (entityIds == null || entityIds?.Count == 0)
             {
-                entities = Graph.GetEntities<T>(byReference);
+                Graph.GetEntities<T>(entities);
             }
             else
             {
-                entities = Graph.GetEntities<T>(byReference).Where(x => entityIds?.Contains(x.Id) ?? false).ToThreadSafeList();
+				ThreadSafeList<BrickEntity> list = new();
+
+				Graph.GetEntities<T>(list);
+				entities = list.Where(x => entityIds?.Contains(x.Id) ?? false).ToThreadSafeList();
             }
             return entities;
         }
@@ -625,7 +638,9 @@ namespace LisaCore
         public Dictionary<int, string> ProcessGraphToContext()
         {
             List<string> sentences = new List<string>();
-            foreach (var e in _graph.GetEntities())
+            ThreadSafeList<BrickEntity> entities = new();
+            _graph.GetEntities(entities);
+            foreach (var e in entities)
             { 
                 sentences.Add($"Entity name {e.GetProperty<string>(BrickSchema.Net.EntityProperties.PropertiesEnum.Name)} is a {e.EntityTypeName}");
                 foreach (var property in e.Properties)

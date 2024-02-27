@@ -1,6 +1,7 @@
 ﻿using BrickSchema.Net;
 using BrickSchema.Net.Classes;
 using BrickSchema.Net.Classes.Equipments;
+using BrickSchema.Net.ThreadSafeObjects;
 using OpenNLP.Tools.Graphs;
 using System;
 using System.Collections.Generic;
@@ -46,9 +47,10 @@ namespace LisaCore.KnowledgeGraph
 
                 lock (lockObject)
                 {
-                   
+
                     //Do work
-                    var bricks = _graph.GetEntities();
+                    ThreadSafeList<BrickEntity> bricks = new();
+                    _graph.GetEntities(bricks);
                     foreach (var brick in bricks)
                     {
                         if (brick is Equipment equipment)
