@@ -116,9 +116,9 @@ namespace LisaCore
             return brickBehaviors;
         }
 
-        public void SaveGraph()
+        public async Task SaveGraphAsync()
         {
-            _graph.SaveSchema();
+            await _graph.SaveSchemaAsync();
         }
 
         //public void ArchiveEntityProperties(string entityId, int olderThanDays = 30)
