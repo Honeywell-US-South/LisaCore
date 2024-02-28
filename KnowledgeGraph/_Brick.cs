@@ -63,7 +63,7 @@ namespace LisaCore
             return entities.FirstOrDefault();
 		}
 
-        public ThreadSafeList<BrickEntity> GetEntities<T>(ThreadSafeList<BrickEntity> entities, List<string>? entityIds = null)
+        public ThreadSafeList<BrickEntity> GetEntities<T>(ThreadSafeList<BrickEntity> entities, List<string>? entityIds = null) where T : BrickEntity
         {
 
             if (entityIds == null || entityIds?.Count == 0)
