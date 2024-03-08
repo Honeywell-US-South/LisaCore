@@ -22,13 +22,16 @@ namespace LisaCore
         private LLMIntentClassifier _intentClassifer;
         private readonly string _appName;
 
-        public Lisa(string appName, string dataDirectory, ILogger? logger = null, bool loadGraph = true, bool loadCodeProcessor = false, bool loadGPT = false)
+        public Lisa(string appName, string dataDirectory, string modelPath, ILogger? logger = null, bool loadGraph = true, bool loadCodeProcessor = false, bool loadGPT = false)
         {
             _appName = appName;
             _logger = logger;
             if (loadCodeProcessor) InitCodeProcessor();
-            //if (loadGPT) InitGPT(Path.Combine("Lisa", "Llama2", "llama-2-7b-guanaco-qlora.Q4_K_M.gguf"));
-            if (loadGPT) InitGPT(@"D:\Llama2\mixtral-8x7b-v0.1.Q5_K_M.gguf");
+
+            if (!string.IsNullOrEmpty(modelPath) && loadGPT)
+            {
+				if (loadGPT) InitGPT(modelPath);
+			}
 
 			if (loadGraph) InitKnowledgeGraph(dataDirectory);
         }
