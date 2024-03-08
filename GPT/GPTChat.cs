@@ -11,7 +11,7 @@ namespace LisaCore.GPT
     {
         public event EventHandler<ChatSpeak>? OnGPTSpeak;
         public event EventHandler<ChatMessage>? OnGPTChatMessage;
-
+        private ChatSession _session;
         private readonly InteractiveExecutor _executor;
         private readonly LLamaContext _context;
         private readonly ConcurrentQueue<ChatMessage> _inputQueue = new();
@@ -19,7 +19,7 @@ namespace LisaCore.GPT
         private bool _stop = true;
         private readonly string _chatName;
         private readonly uint _maxTokenLimit;
-        private string SystemInstruction => $@"You are an adept and intelligent building automation technician named {_chatName}. {_chatName} is an expert at HVAC, DDC controls, Fire Alarm, Access Control, Security, and Digital Video. {_chatName} can remember information set between <<SYS>>info<</SYS>>. {_chatName} use the info to identify issues and help user solve problem. When User ask for help, provides step by step instruction how to fix the problem.";
+        private string SystemInstruction => $@"You are an adept and intelligent building automation technician named {_chatName}. {_chatName} is an expert at HVAC, DDC controls, Fire Alarm, Access Control, Security, and Digital Video. {_chatName} remembers chat converstation and use the information to identify issues and help user solve problem. When User ask for help, provides step by step instruction how to fix the problem. Ask for user name if unknown.";
 
         public GPTChat(string chatName, string modelPath, uint maxTokenLimit = 1024)
         {
@@ -37,6 +37,7 @@ namespace LisaCore.GPT
             _context = model.CreateContext(parameters) ?? throw new InvalidOperationException("Unable to create context from model.");
             _executor = new InteractiveExecutor(_context);
             _maxTokenLimit = maxTokenLimit;
+            _session = new ChatSession(_executor);
         }
 
         public Task ChatAsync(ChatMessage input) => EnqueueAsync(_inputQueue, input);
@@ -50,8 +51,15 @@ namespace LisaCore.GPT
         private async Task Run()
         {
             var inferenceParams = new InferenceParams { Temperature = 0.6f, AntiPrompts = new List<string> { "User:" }, MaxTokens = 128 };
-            await ChatAsync(new ChatMessage { RequestBy = "System", UserInput = $"{SystemInstruction}\r\nUser:" });
-
+            //await ChatAsync(new ChatMessage { RequestBy = "System", UserInput = $"{SystemInstruction}\r\nUser:" });
+            await foreach (var text in _executor.InferAsync($"{SystemInstruction}\r\nUser:", inferenceParams))
+            {
+                //if (!string.IsNullOrEmpty(text))
+                //{
+                //    outputMessage.Append(text);
+                //    OnGPTSpeak?.Invoke(this, new ChatSpeak { ConverstationId = input.ConversationId, Message = text });
+                //}
+            }
             while (!_stop)
             {
                 await ProcessInputQueue(inferenceParams);
@@ -93,8 +101,12 @@ namespace LisaCore.GPT
             //    contextMessage = GPT3Tokenizer.TrimTextUpToTokenLimit(contextMessage, maxContextToken);
             //}
 
-            var fullPrompt = string.IsNullOrEmpty(input.Context)? input.UserInput : $"{input.Context}\n{input.UserInput}";
-            await foreach (var text in _executor.InferAsync(fullPrompt, inferenceParams))
+            var fullPrompt = string.IsNullOrEmpty(input.Context)? $"{input.UserInput}" : $"{input.Context}\n{input.UserInput}";
+            //await foreach (var text in _session.ChatAsync(new ChatHistory.Message(AuthorRole.User, fullPrompt), new InferenceParams { Temperature = 0.6f, AntiPrompts = ["User:"] }))
+            //{
+            //    Console.Write(text);
+            //}
+            await foreach (var text in _executor.InferAsync(input.UserInput, inferenceParams))
             {
                 if (!string.IsNullOrEmpty(text))
                 {

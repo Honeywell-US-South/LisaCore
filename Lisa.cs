@@ -28,7 +28,7 @@ namespace LisaCore
             _logger = logger;
             if (loadCodeProcessor) InitCodeProcessor();
             //if (loadGPT) InitGPT(Path.Combine("Lisa", "Llama2", "llama-2-7b-guanaco-qlora.Q4_K_M.gguf"));
-            if (loadGPT) InitGPT(@"C:\Users\H184318\source\repos\Honeywell-US-South\EmberWeb\EmberWeb\mixtral-8x7b-v0.1.Q5_K_M.gguf");
+            if (loadGPT) InitGPT(@"D:\Llama2\mixtral-8x7b-v0.1.Q5_K_M.gguf");
 
 			if (loadGraph) InitKnowledgeGraph(dataDirectory);
         }

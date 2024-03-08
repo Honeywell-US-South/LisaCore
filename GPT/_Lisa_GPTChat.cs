@@ -42,7 +42,9 @@ namespace LisaCore
 
         private void OnGPTChatMessageReceived(object? sender, ChatMessage message)
         {
+            if (message.OutputMessage.StartsWith("Ember: ")) message.OutputMessage = message.OutputMessage.Substring(7);
             if (message.OutputMessage.EndsWith("User:")) message.OutputMessage = message.OutputMessage.Substring(0, message.OutputMessage.Length - 5);
+            if (message.OutputMessage.Contains(@"\[Stored Chat Conversation\]")) message.OutputMessage = message.OutputMessage.Replace(@"\[Stored Chat Conversation\]", "");
             OnChatMessage?.Invoke(sender, message);
         }
     }
