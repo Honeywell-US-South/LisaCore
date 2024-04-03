@@ -16,6 +16,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using BrickSchema.Net.Behaviors;
 using BrickSchema.Net.ThreadSafeObjects;
 
+
 //Keep this as LisaCore
 namespace LisaCore
 {
