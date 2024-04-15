@@ -511,7 +511,7 @@ namespace LisaCore
                         RelationshipName = typeof(AssociatedWith).Name;
                         break;
                     case RelationshipTypes.Fedby:
-                        RelationshipName = typeof(Fedby).Name;
+                        RelationshipName = typeof(FedBy).Name;
                         break;
                     case RelationshipTypes.LocationOf:
                         RelationshipName = typeof(LocationOf).Name;
