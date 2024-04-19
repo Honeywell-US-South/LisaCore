@@ -249,7 +249,7 @@ namespace LisaCore
                     }
                     return space;
                 case LocationTypes.Storey:
-                    var storey = _graph.AddLocationStorey(id);
+                    var storey = _graph.AddLocationBasement(id);
                     if (!storey.Name.Equals(name))
                     {
                         storey.Name = name;
